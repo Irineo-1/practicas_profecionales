@@ -1,5 +1,8 @@
 <template>
-  <router-view />
+  <div>
+    <h1>asdasd</h1>
+    <router-view />
+  </div>
 </template>
 
 <script setup>
