@@ -36,12 +36,19 @@
                     </v-tabs>
 
                     <v-window v-model="tab">
+                        <!-- Seccion del login -->
                         <v-window-item value="tab-1">
                             <v-card>
                                 <v-container>
                                     <v-row>
                                         <v-col>
-                                            <v-text-field label="Numero de control" type="number" variant="solo" Prepend-icon="mdi-account"></v-text-field>
+                                            <v-text-field
+                                                label="Numero de control"
+                                                type="number"
+                                                variant="solo"
+                                                Prepend-icon="mdi-account"
+                                                v-model="nControlLogin"
+                                            ></v-text-field>
                                         </v-col>
                                     </v-row>
                                     <v-row>
@@ -52,6 +59,7 @@
                                                 variant="solo"
                                                 Prepend-icon="mdi-lock-outline"
                                                 :append-inner-icon="iconIce"
+                                                v-model="passLogin"
                                                 @click:append-inner="toggleTypeOfInputPassword"
                                             ></v-text-field>
                                         </v-col>
@@ -62,18 +70,43 @@
                                 
                                 <v-card-actions>
                                     <v-spacer></v-spacer>
-                                    <v-btn variant="elevated" color="green-lighten-1">
+                                    <v-btn
+                                        variant="elevated"
+                                        color="green-lighten-1"
+                                        :disabled="( nControlLogin.trim() == '' || passLogin.trim() == '') ? true : false"
+                                        @click="iniciarSession"
+                                    >
                                         Iniciar
                                     </v-btn>
                                 </v-card-actions>
                             </v-card>
                         </v-window-item>
+                        <!-- Seccion del registro -->
                         <v-window-item value="tab-2">
                             <v-card>
                                     <v-container>
                                         <v-row>
                                             <v-col>
-                                                <v-text-field label="Numero de control" type="number" variant="solo" Prepend-icon="mdi-account"></v-text-field>
+                                                <v-text-field
+                                                    label="Numero de control"
+                                                    type="number"
+                                                    variant="solo"
+                                                    Prepend-icon="mdi-account"
+                                                    v-model="nControlRegister"
+                                                >
+                                                </v-text-field>
+                                            </v-col>
+                                        </v-row>
+                                        <v-row>
+                                            <v-col>
+                                                <v-text-field
+                                                    label="Nombre completo"
+                                                    type="text"
+                                                    variant="solo"
+                                                    Prepend-icon="mdi-account-school"
+                                                    v-model="nombreCompleto"
+                                                >
+                                                </v-text-field>
                                             </v-col>
                                         </v-row>
                                         <v-row>
@@ -83,7 +116,7 @@
                                                     :type="typeInputPassword"
                                                     variant="solo"
                                                     Prepend-icon="mdi-lock-outline"
-                                                    v-model="pass"
+                                                    v-model="passRegister"
                                                     :append-inner-icon="iconIce"
                                                     @click:append-inner="toggleTypeOfInputPassword"
                                                 ></v-text-field>
@@ -96,6 +129,7 @@
                                                     :type="typeInputPassword"
                                                     :append-inner-icon="iconIce"
                                                     :rules="samePasssword"
+                                                    v-model="passRegisterRepeat"
                                                     variant="solo"
                                                     Prepend-icon="mdi-lock-outline"
                                                     @click:append-inner="toggleTypeOfInputPassword"
@@ -108,7 +142,11 @@
                                     
                                     <v-card-actions>
                                         <v-spacer></v-spacer>
-                                        <v-btn variant="elevated" color="green-lighten-1">
+                                        <v-btn
+                                            variant="elevated"
+                                            color="green-lighten-1"
+                                            @click="registrarUsuario"
+                                        >
                                             Registrarse
                                         </v-btn>
                                     </v-card-actions>

@@ -2,3 +2,8 @@
 <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/vuetify@3.3.20/dist/vuetify.min.css">
 <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/@mdi/font@7.2.96/css/materialdesignicons.min.css">
 <script src="https://cdn.jsdelivr.net/npm/vuetify@3.3.20/dist/vuetify.min.js"></script>
+<!-- 
+:disabled="( nControlRegister.trim() == '' ||
+                                                        nombreCompleto.trim() == '' ||
+                                                        passRegister.trim() == '' ||
+                                                        passRegister != passRegisterRepeat ) ? true : false " -->

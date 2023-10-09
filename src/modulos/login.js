@@ -7,8 +7,36 @@ createApp({
         let tab = ref(null)
         let iconIce = ref("mdi-eye-outline")
         let typeInputPassword = ref("password")
-        let pass = ref();
-        let samePasssword = ref([ value => value == pass.value || 'Las contraseñas no coinciden'])
+        let passRegister = ref('')
+        let passRegisterRepeat = ref('')
+        let nombreCompleto = ref('')
+        let nControlLogin = ref('')
+        let nControlRegister = ref('')
+        let passLogin = ref('')
+        let samePasssword = ref([ value => value == passRegister.value || 'Las contraseñas no coinciden' ])
+
+        const iniciarSession = () =>
+        {
+            console.log(nControlLogin.value)
+            console.log(samePasssword.value)
+        }
+
+        const registrarUsuario = () =>
+        {
+            const formData = new FormData();
+            formData.append('action', 'registrar_usuario');
+            formData.append('numero_control', nControlRegister);
+            formData.append('nombre', nombreCompleto);
+            formData.append('password', passRegister);
+            
+            fetch('controladores/loginSection.php', {
+              method: 'POST',
+              body: formData
+            })
+            .then(response => response.text())
+            .then(data => console.log(data))
+            .catch(error => console.error(error));
+        }
 
         const toggleTypeOfInputPassword = () =>
         {
@@ -28,9 +56,16 @@ createApp({
             tab,
             iconIce,
             typeInputPassword,
-            pass,
+            passRegister,
+            passRegisterRepeat,
+            nControlLogin,
+            nControlRegister,
+            passLogin,
             samePasssword,
+            nombreCompleto,
             toggleTypeOfInputPassword,
+            iniciarSession,
+            registrarUsuario,
         }
 
     }
