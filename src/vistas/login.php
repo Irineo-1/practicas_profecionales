@@ -146,6 +146,10 @@
                                             variant="elevated"
                                             color="green-lighten-1"
                                             @click="registrarUsuario"
+                                            :disabled="( nControlRegister.trim() == '' ||
+                                                        nombreCompleto.trim() == '' ||
+                                                        passRegister.trim() == '' ||
+                                                        passRegister != passRegisterRepeat ) ? true : false "
                                         >
                                             Registrarse
                                         </v-btn>
@@ -156,6 +160,25 @@
                 </v-card>
                 </v-col>
             </v-row>
+
+            <v-snackbar
+            color="#6a1c37"
+            rounded="pill"
+            v-model="smsError"
+            >
+            El usuario ya esta registrado
+
+            <template v-slot:actions>
+                <v-btn
+                color="white"
+                variant="text"
+                @click="smsError = false"
+                >
+                cerrar
+                </v-btn>
+            </template>
+            </v-snackbar>
+
         </v-container>
     </div>
 

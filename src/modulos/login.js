@@ -13,6 +13,7 @@ createApp({
         let nControlLogin = ref('')
         let nControlRegister = ref('')
         let passLogin = ref('')
+        let smsError = ref(false)
         let samePasssword = ref([ value => value == passRegister.value || 'Las contraseñas no coinciden' ])
 
         const iniciarSession = () =>
@@ -25,17 +26,25 @@ createApp({
         {
             const formData = new FormData();
             formData.append('action', 'registrar_usuario');
-            formData.append('numero_control', nControlRegister);
-            formData.append('nombre', nombreCompleto);
-            formData.append('password', passRegister);
+            formData.append('numero_control', nControlRegister.value);
+            formData.append('nombre', nombreCompleto.value);
+            formData.append('password', passRegister.value);
             
             fetch('controladores/loginSection.php', {
               method: 'POST',
               body: formData
             })
             .then(response => response.text())
-            .then(data => console.log(data))
-            .catch(error => console.error(error));
+            .then(data => {
+                if( data == 0 )
+                {
+                    window.location.href = "index.php" // ahora que tiene la session se redirege a la pagina principal
+                }
+                else
+                {
+                    smsError.value = true
+                }
+            })
         }
 
         const toggleTypeOfInputPassword = () =>
@@ -63,6 +72,7 @@ createApp({
             passLogin,
             samePasssword,
             nombreCompleto,
+            smsError,
             toggleTypeOfInputPassword,
             iniciarSession,
             registrarUsuario,

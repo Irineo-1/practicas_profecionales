@@ -7,6 +7,6 @@
     }
     else
     {
-        // inicia secion en automatico
+        include('src/vistas/paginaPrincipal.php'); // inicia secion en automatico
     }
 ?>
