@@ -166,7 +166,7 @@
             rounded="pill"
             v-model="smsError"
             >
-            El usuario ya esta registrado
+            {{texto_error}}
 
             <template v-slot:actions>
                 <v-btn

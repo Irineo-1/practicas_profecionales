@@ -13,4 +13,16 @@
         $res = $alumno->registrarUsuario( $numero_control, $nombre, $password );
         echo $res;
     }
+
+     if($_POST['action'] == "iniciar_Secion"){
+
+        $numero_usuario = $_POST["Numero_usuario"];
+        $password = $_POST["Contrasena"];
+
+        $catchresp = $alumno->iniciarsecion($numero_usuario,$password);
+        echo $catchresp;
+
+     }
+
+     
 ?>
