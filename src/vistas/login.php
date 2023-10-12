@@ -173,6 +173,7 @@
                 color="white"
                 variant="text"
                 @click="smsError = false"
+                
                 >
                 cerrar
                 </v-btn>
