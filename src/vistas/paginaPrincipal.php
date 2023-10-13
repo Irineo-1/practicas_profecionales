@@ -38,8 +38,10 @@
                                 <template v-slot:prepend>
                                     <v-icon>mdi-account-off </v-icon>
                                 </template>
-                                <v-list-item-title>Cerrar sesión</v-list-item-title>
-                                <a hrfe="cerrarsesion.php" data-toggle="control-sidebera" >
+                                
+                                <v-list-item-title @click ="CerrarSesion">Cerrar sesión</v-list-item-title>
+                                 
+
                             </v-list-item>
                         </v-list>
                     </v-menu>

@@ -51,6 +51,7 @@ class Alumno
             }else{
                 $pastORnot = 0;
             }
+           
 
             
              

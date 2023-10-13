@@ -24,5 +24,13 @@
 
      }
 
+     if($_POST['action'] == "CerrarSesion"){
+     $cerrar = $_POST[CerrarSesion];
+     session_start();
+     session_destroy();
+
+        
+     }
+
      
 ?>
