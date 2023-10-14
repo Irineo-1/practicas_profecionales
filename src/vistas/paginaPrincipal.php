@@ -23,7 +23,7 @@
                                 color="white"
                                 v-bind="props"
                             >
-                            Nombre del alumno
+                            {{ userName }}
                             <v-icon>mdi-chevron-down</v-icon>
                             </v-btn>
                         </template>

@@ -27,9 +27,26 @@ class Alumno
         return 0;
     }
 
-    public static function getAlumno($numero_control)
+    public static function getAlumno()
     {
+        $conexion = new DBConecction();
 
+        $cnn = $conexion->getConnection();
+
+        $NCONTROL = $_SESSION["NControl"];
+
+        $sql = "SELECT nombre_completo, numero_proceso FROM alumnos WHERE numero_control = '$NCONTROL'";
+
+        $res = $cnn->query($sql);
+
+        $data = [];
+
+        while($row = $res->fetch_assoc())
+        {
+            array_push($data, $row);
+        }
+
+        return $data;
     }
 }
 
