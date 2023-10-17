@@ -27,6 +27,44 @@ class Alumno
         return 0;
     }
 
+    public static function iniciarsecion($numero_control, $password){
+
+        $conexion = new DBConecction();
+        $passworEncrip = new password();
+
+        $cnn = $conexion->getConnection();
+
+        $sql = "SELECT numero_control, password from alumnos where '$numero_control' = numero_control";
+
+        $resunt = $cnn->query($sql);
+        $pastORnot = 0;
+        
+        while($row = $resunt->fetch_assoc()){
+            if($passworEncrip->verificarPassword($password,$row["password"])){
+                $pastORnot = 1;
+                $_SESSION["NControl"] = $numero_control;
+
+
+                
+                
+
+            }else{
+                $pastORnot = 0;
+            }
+           
+
+            
+             
+
+        }
+        
+        return $pastORnot;
+
+
+    }
+
+
+
     public static function getAlumno()
     {
         $conexion = new DBConecction();
@@ -49,5 +87,7 @@ class Alumno
         return $data;
     }
 }
+
+
 
 ?>

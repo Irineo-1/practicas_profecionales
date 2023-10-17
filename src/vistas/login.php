@@ -7,10 +7,14 @@
     <!-- librerias de front-end -->
     <?php include('src/componentes/vueKit.php'); ?>
     <!-- librerias de front-end -->
+    <style> body{background-image: url('src/img/Pt.jpeg'); background-repeat: no-reapet; color:#FFFF;} </style>
 </head>
+
 <body>
+
     
     <div id="login">
+        
         <v-container style="height: 100vh;">
             <v-row
                 align="center"
@@ -166,13 +170,14 @@
             rounded="pill"
             v-model="smsError"
             >
-            El usuario ya esta registrado
+            {{texto_error}}
 
             <template v-slot:actions>
                 <v-btn
                 color="white"
                 variant="text"
                 @click="smsError = false"
+                
                 >
                 cerrar
                 </v-btn>
