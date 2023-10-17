@@ -39,28 +39,20 @@ class Alumno
         $resunt = $cnn->query($sql);
         $pastORnot = 0;
         
-        while($row = $resunt->fetch_assoc()){
-            if($passworEncrip->verificarPassword($password,$row["password"])){
+        while($row = $resunt->fetch_assoc())
+        {
+            if($passworEncrip->verificarPassword($password,$row["password"]))
+            {
                 $pastORnot = 1;
                 $_SESSION["NControl"] = $numero_control;
-
-
-                
-                
-
-            }else{
+            }
+            else
+            {
                 $pastORnot = 0;
             }
-           
-
-            
-             
-
         }
         
         return $pastORnot;
-
-
     }
 
 

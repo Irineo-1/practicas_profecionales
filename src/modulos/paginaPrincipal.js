@@ -19,16 +19,12 @@ createApp({
                 method: 'POST',
                 body : formData
             }).then(res => res.text()).then(data => {
-                
                 window.location.href = "index.php"
-                    
-                
-
             })
 
         }
-        const siguientePaso = () =>
         
+        const siguientePaso = () =>
         {
             step.value ++
         }

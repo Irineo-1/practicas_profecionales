@@ -16,6 +16,7 @@ createApp({
         let smsError = ref(false)
         let samePasssword = ref([ value => value == passRegister.value || 'Las contraseñas no coinciden' ])
         let texto_error = ref("")
+
         const iniciarSession = () =>
         {
             const formData = new FormData();
@@ -29,17 +30,16 @@ createApp({
             })
             .then(response => response.text())
             .then(data =>  {
-                if (data == 1){
-
+                if (data == 1)
+                {
                     window.location.href = "index.php"             
                 }
-                else{
+                else
+                {
                     texto_error.value = "Error de contraseña"
                     smsError.value = true 
                 }
-            
-            
-         })
+            })
 
         }
          
@@ -64,6 +64,7 @@ createApp({
                 }
                 else
                 {
+                    texto_error.value = `El usuario ${nombreCompleto.value} ya existe`
                     smsError.value = true
                 }
             })

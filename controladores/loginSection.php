@@ -14,24 +14,21 @@
         echo $res;
     }
 
-     if($_POST['action'] == "iniciar_Secion"){
+    if($_POST['action'] == "iniciar_Secion"){
 
         $numero_usuario = $_POST["Numero_usuario"];
         $password = $_POST["Contrasena"];
 
         $catchresp = $alumno->iniciarsecion($numero_usuario,$password);
         echo $catchresp;
+    }
 
-     }
-
-     if($_POST['action'] == "CerrarSesion"){
-     $cerrar = $_POST['CerrarSesion'];
-     session_start();
-     session_destroy();
-     echo "EntroAlif";
-
-        
-     }
+    if($_POST['action'] == "CerrarSesion")
+    {
+        session_start();
+        session_destroy();
+        echo 0;
+    }
 
      
 ?>
