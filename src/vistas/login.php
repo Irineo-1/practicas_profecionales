@@ -63,6 +63,7 @@
                                                     variant="solo"
                                                     Prepend-icon="mdi-lock-outline"
                                                     :append-inner-icon="iconIce"
+                                                    @keyup.enter="iniciarSession"
                                                     v-model="passLogin"
                                                     @click:append-inner="toggleTypeOfInputPassword"
                                                 ></v-text-field>
