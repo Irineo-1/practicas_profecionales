@@ -3,14 +3,14 @@
 
 class DBConecction
 {
-    private $host = "localhost";
-    private $user = "root";
-    private $password = "";
-    private $database = "practicas_profesionales";
+    private static $host = "localhost";
+    private static $user = "root";
+    private static $password = "";
+    private static $database = "practicas_profesionales";
 
-    public function getConnection()
+    public static function getConnection()
     {
-        return mysqli_connect( $this->host, $this->user, $this->password, $this->database );
+        return mysqli_connect( self::$host, self::$user, self::$password, self::$database );
     }
 
 }

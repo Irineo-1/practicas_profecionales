@@ -7,6 +7,8 @@ session_start();
 
 class Alumno
 {
+    private static $Tabla = "alumnos";
+
     public static function registrarUsuario( $numero_control, $nombre, $password )
     {
         $conexion = new DBConecction();
@@ -16,7 +18,7 @@ class Alumno
 
         $cnn = $conexion->getConnection();
 
-        $sql = "INSERT INTO alumnos(numero_control, nombre_completo, password) VALUES('$numero_control', '$nombre', '$hashPassword')";
+        $sql = "INSERT INTO ".self::$Tabla."(numero_control, nombre_completo, password) VALUES('$numero_control', '$nombre', '$hashPassword')";
 
         $cnn->query($sql);
 
@@ -34,7 +36,7 @@ class Alumno
 
         $cnn = $conexion->getConnection();
 
-        $sql = "SELECT numero_control, password from alumnos where '$numero_control' = numero_control";
+        $sql = "SELECT numero_control, password from ".self::$Tabla." where '$numero_control' = numero_control";
 
         $resunt = $cnn->query($sql);
         $pastORnot = 0;
@@ -65,7 +67,7 @@ class Alumno
 
         $NCONTROL = $_SESSION["NControl"];
 
-        $sql = "SELECT nombre_completo, numero_proceso FROM alumnos WHERE numero_control = '$NCONTROL'";
+        $sql = "SELECT nombre_completo, numero_proceso FROM ".self::$Tabla." WHERE numero_control = '$NCONTROL'";
 
         $res = $cnn->query($sql);
 
