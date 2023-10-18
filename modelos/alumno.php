@@ -11,12 +11,9 @@ class Alumno
 
     public static function registrarUsuario( $numero_control, $nombre, $password )
     {
-        $conexion = new DBConecction();
-        $passworEncrip = new password();
+        $hashPassword = password::hashPassword($password);
 
-        $hashPassword = $passworEncrip->hashPassword($password);
-
-        $cnn = $conexion->getConnection();
+        $cnn = DBConecction::getConnection();
 
         $sql = "INSERT INTO ".self::$Tabla."(numero_control, nombre_completo, password) VALUES('$numero_control', '$nombre', '$hashPassword')";
 
@@ -29,12 +26,9 @@ class Alumno
         return 0;
     }
 
-    public static function iniciarsecion($numero_control, $password){
-
-        $conexion = new DBConecction();
-        $passworEncrip = new password();
-
-        $cnn = $conexion->getConnection();
+    public static function iniciarsecion($numero_control, $password)
+    {
+        $cnn = DBConecction::getConnection();
 
         $sql = "SELECT numero_control, password from ".self::$Tabla." where '$numero_control' = numero_control";
 
@@ -43,7 +37,7 @@ class Alumno
         
         while($row = $resunt->fetch_assoc())
         {
-            if($passworEncrip->verificarPassword($password,$row["password"]))
+            if(password::verificarPassword($password,$row["password"]))
             {
                 $pastORnot = 1;
                 $_SESSION["NControl"] = $numero_control;
@@ -61,9 +55,7 @@ class Alumno
 
     public static function getAlumno()
     {
-        $conexion = new DBConecction();
-
-        $cnn = $conexion->getConnection();
+        $cnn = DBConecction::getConnection();
 
         $NCONTROL = $_SESSION["NControl"];
 
