@@ -1,7 +1,7 @@
 <?php
 
 require_once("conexion.php");
-require_once("passwordEncriptado.php");
+require_once(dirname(dirname(__FILE__))."/controladores/passwordEncriptado.php");
 
 session_start();
 

@@ -8,6 +8,7 @@ createApp({
         let step = ref(0)
         let respuestaPrimerPregunta = ref('')
         let userName = ref('')
+        let constanciaFile = ref([])
         let tituloApartados = ["Servicio social", "Constancia de termino", "Empresas donde deseas hacer tus practicas", "Carta de Presentación"]
         
         const CerrarSesion = () =>{ 
@@ -24,9 +25,21 @@ createApp({
 
         }
         
-        const siguientePaso = () =>
+        const subirConstancia = () =>
         {
-            step.value ++
+            const data = new FormData()
+            console.log(constanciaFile.value[0])
+            data.append("action", "subir_constancia")
+            data.append("file", constanciaFile.value[0])
+
+            fetch("controladores/stepSection.php",{
+                method: "POST",
+                body: data,
+            })
+            .then(res => res.text())
+            .then((a) => {
+                console.log(a)
+            })
         }
 
         return {
@@ -34,8 +47,9 @@ createApp({
             tituloApartados,
             respuestaPrimerPregunta,
             userName,
+            constanciaFile,
             CerrarSesion,
-            siguientePaso
+            subirConstancia
         }
     },
     async created()

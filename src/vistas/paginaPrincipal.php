@@ -10,7 +10,7 @@
 </head>
 <body>
     <div id="paginaPrincipal">
-        <v-card class="mx-auto" :class="[`elevation-0`]">
+        <v-card class="mx-auto" :class="[`elevation-0`]" max-width="800">
             <v-layout>
                 <v-app-bar color="#6a1c37">
 
@@ -52,7 +52,7 @@
                     <v-container fluid>
                     <v-row dense>
                         <v-col>
-                            <v-card class="mx-auto">
+                            <v-card class="mx-auto" :class="[`elevation-5`]">
                                 <v-card-title class="text-h6 font-weight-regular justify-space-between">
                                 <span style="margin-right: 10px;">{{tituloApartados[step]}}</span>
                                 <v-avatar
@@ -64,55 +64,90 @@
 
                                 <v-window v-model="step">
                                 <v-window-item :value="0">
-                                    <v-card-text>
-                                        <span style="font-weight: 600; font-size: 1.1rem;">¿Has realizado ya tu servicio social?</span>
-                                        <br>
-                                        <br>
-                                        <v-row>
-                                            <v-col
-                                                cols="12"
-                                                class="py-2"
-                                            >
-                                                <v-btn-toggle
-                                                v-model="respuestaPrimerPregunta"
-                                                rounded="0"
-                                                color="#6a1c37"
-                                                group
-                                                >
-                                                    <v-btn value="si">
-                                                        Si
-                                                    </v-btn>
 
-                                                    <v-btn value="no">
-                                                        No
-                                                    </v-btn>
-                                                </v-btn-toggle>
-                                            </v-col>
-                                        </v-row>
-                                        <br>
-                                        <span
-                                            v-show="respuestaPrimerPregunta == 'no'"
-                                            style="font-weight: 600; color: #6a1c37"
-                                        >
-                                            No puedes realizar tus practicas profesionales si no tienes tu servicio
-                                        </span>
-                                    </v-card-text>
+                                    <v-card
+                                        title="¿Has realizado ya tu servicio social?"
+                                    >
+                                        <v-card-text>
+                                            <v-row>
+                                                <v-col
+                                                    cols="12"
+                                                    class="py-2"
+                                                >
+                                                    <v-btn-toggle
+                                                    v-model="respuestaPrimerPregunta"
+                                                    rounded="0"
+                                                    color="#6a1c37"
+                                                    group
+                                                    >
+                                                        <v-btn value="si">
+                                                            Si
+                                                        </v-btn>
+
+                                                        <v-btn value="no">
+                                                            No
+                                                        </v-btn>
+                                                    </v-btn-toggle>
+                                                </v-col>
+                                            </v-row>
+                                            <br>
+                                            <span
+                                                v-show="respuestaPrimerPregunta == 'no'"
+                                                style="font-weight: 600; color: #6a1c37"
+                                            >
+                                                No puedes realizar tus practicas profesionales si no tienes tu servicio
+                                            </span>
+                                        </v-card-text>
+
+                                        <v-divider></v-divider>
+
+                                        <v-card-actions>
+                                            <v-spacer></v-spacer>
+                                            <v-btn
+                                                color="#6a1c37"
+                                                variant="flat"
+                                                @click="step ++"
+                                                :disabled="(respuestaPrimerPregunta == 'no' || respuestaPrimerPregunta == '') ? true : false"
+                                            >
+                                                Siguiente
+                                            </v-btn>
+                                        </v-card-actions>
+                                    </v-card>
+
                                 </v-window-item>
 
                                 <v-window-item :value="1">
-                                    <v-card-text>
-                                    <v-text-field
-                                        label="Password"
-                                        type="password"
-                                    ></v-text-field>
-                                    <v-text-field
-                                        label="Confirm Password"
-                                        type="password"
-                                    ></v-text-field>
-                                    <span class="text-caption text-grey-darken-1">
-                                        Please enter a password for your account
-                                    </span>
-                                    </v-card-text>
+                                    <v-card>
+                                        <v-card-text>
+                                            <span style="font-weight: 600; font-size: 1.1rem;">Subir constancia de termino</span>
+                                            <br>
+                                            <span class="text-caption text-grey">Solo imagenes o pdf</span>
+                                            <br>
+                                            <br>
+                                            <v-file-input
+                                                show-size
+                                                counter
+                                                density="compact"
+                                                accept="image/*,.pdf"
+                                                v-model="constanciaFile"
+                                                label="Click aqui para subir el documento"
+                                            ></v-file-input>
+                                        </v-card-text>
+                                        
+                                        <v-divider></v-divider>
+
+                                        <v-card-actions>
+                                            <v-spacer></v-spacer>
+                                            <v-btn
+                                                color="#6a1c37"
+                                                variant="flat"
+                                                @click="subirConstancia"
+                                                :disabled="( constanciaFile.length < 1 ) ? true : false"
+                                            >
+                                                Siguiente
+                                            </v-btn>
+                                        </v-card-actions>
+                                    </v-card>
                                 </v-window-item>
 
                                 <v-window-item :value="2">
@@ -130,20 +165,6 @@
                                     </div>
                                 </v-window-item>
                                 </v-window>
-
-                                <v-divider></v-divider>
-
-                                <v-card-actions>
-                                    <v-spacer></v-spacer>
-                                    <v-btn
-                                        color="#6a1c37"
-                                        variant="flat"
-                                        @click="siguientePaso"
-                                        :disabled="(respuestaPrimerPregunta == 'no') ? true : false"
-                                    >
-                                        Siguiente
-                                    </v-btn>
-                                </v-card-actions>
                             </v-card>
                         </v-col>
                     </v-row>
