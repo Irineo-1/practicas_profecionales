@@ -28,17 +28,17 @@ createApp({
         const subirConstancia = () =>
         {
             const data = new FormData()
-            console.log(constanciaFile.value[0])
             data.append("action", "subir_constancia")
             data.append("file", constanciaFile.value[0])
+            data.append("step", step.value + 1)
 
             fetch("controladores/stepSection.php",{
                 method: "POST",
                 body: data,
             })
             .then(res => res.text())
-            .then((a) => {
-                console.log(a)
+            .then(() => {
+                step.value ++
             })
         }
 
@@ -56,7 +56,7 @@ createApp({
     {
         let user = await getUser()
         this.userName = user[0].nombre_completo
-        this.step = user[0].numero_proceso
+        this.step = parseInt(user[0].numero_proceso)
     }
 
 }).use(vuetify).mount("#paginaPrincipal")

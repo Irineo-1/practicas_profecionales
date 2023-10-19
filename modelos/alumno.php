@@ -48,10 +48,25 @@ class Alumno
             }
         }
         
+        $cnn->close();
+
         return $pastORnot;
     }
 
+    public static function updateStep( $step )
+    {
+        $cnn = DBConecction::getConnection();
 
+        $NCONTROL = $_SESSION["NControl"];
+
+        $sql = "UPDATE ".self::$Tabla." SET numero_proceso = '$step' WHERE numero_control = '$NCONTROL'";
+
+        $cnn->query($sql);
+
+        $cnn->close();
+
+        return 0;
+    }
 
     public static function getAlumno()
     {
@@ -69,6 +84,8 @@ class Alumno
         {
             array_push($data, $row);
         }
+
+        $cnn->close();
 
         return $data;
     }

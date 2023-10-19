@@ -1,15 +1,25 @@
 <?php
 
+    require_once(dirname(dirname(__FILE__))."/modelos/documentos.php");
+    require_once(dirname(dirname(__FILE__))."/modelos/alumno.php");
+
     if( $_POST["action"] == "subir_constancia" )
     {
         $constancia = $_FILES["file"];
+        $step = $_POST["step"];
         $extension = preg_replace('/^.*\.([^.]+)$/D', "$1", $constancia["name"]);
 
         if(!is_dir("../archivosGuardados")) mkdir("../archivosGuardados");
 
-        move_uploaded_file($constancia["tmp_name"], "../archivosGuardados/".v4().".".$extension);
+        $final_name = v4().".".$extension;
 
-        echo 0;
+        $id_file = Documentos::addDocument( $final_name, "constancia_termino" );
+        
+        Alumno::updateStep( $step );
+
+        move_uploaded_file($constancia["tmp_name"], "../archivosGuardados/".$final_name);
+
+        echo $id_file;
     }
 
     function v4() {
