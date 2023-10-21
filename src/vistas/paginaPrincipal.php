@@ -151,18 +151,49 @@
                                 </v-window-item>
 
                                 <v-window-item :value="2">
-                                    <div class="pa-4 text-center">
-                                    <v-img
-                                        class="mb-4"
-                                        contain
-                                        height="128"
-                                        src="https://cdn.vuetifyjs.com/images/logos/v.svg"
-                                    ></v-img>
-                                    <h3 class="text-h6 font-weight-light mb-2">
-                                        Welcome to Vuetify
-                                    </h3>
-                                    <span class="text-caption text-grey">Thanks for signing up!</span>
-                                    </div>
+                                    <v-card>
+                                        <v-table
+                                            density="compact"
+                                            fixed-header
+                                            height="400px"
+                                        >
+                                            <thead>
+                                            <tr>
+                                                <th class="text-left">
+                                                nombre_empresa
+                                                </th>
+                                                <th class="text-left">
+                                                entidad_federativa
+                                                </th>
+                                                <th class="text-left">
+                                                tipo_empresa
+                                                </th>
+                                                <th class="text-left">
+                                                tipo_institucion
+                                                </th>
+                                            </tr>
+                                            </thead>
+                                            <tbody>
+                                                <tr v-for="(item,i) in instituciones" :key="i">
+                                                    <td>{{ item.nombre_empresa }}</td>
+                                                    <td>{{ item.entidad_federativa }}</td>
+                                                    <td>{{ item.tipo_empresa }}</td>
+                                                    <td>{{ item.tipo_institucion }}</td>
+                                                </tr>
+                                            </tbody>
+                                        </v-table>
+{{instituciones}}
+                                        <v-card-actions>
+                                            <v-spacer></v-spacer>
+                                            <v-btn
+                                                color="#6a1c37"
+                                                variant="flat"
+                                                @click="subirConstancia"
+                                            >
+                                                Siguiente
+                                            </v-btn>
+                                        </v-card-actions>
+                                    </v-card>
                                 </v-window-item>
                                 </v-window>
                             </v-card>

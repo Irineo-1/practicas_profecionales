@@ -3,8 +3,6 @@
 require_once("conexion.php");
 require_once(dirname(dirname(__FILE__))."/controladores/passwordEncriptado.php");
 
-session_start();
-
 class Alumno
 {
     private static $Tabla = "alumnos";
@@ -86,6 +84,24 @@ class Alumno
         }
 
         $cnn->close();
+
+        return $data;
+    }
+
+    public static function getAlumnos()
+    {
+        $cnn = DBConecction::getConnection();
+
+        $sql = "SELECT * FROM ".self::$Tabla."";
+
+        $res = $cnn->query($sql);
+
+        $data = [];
+
+        while( $row = $res->fetch_assoc() )
+        {
+            array_push($data, $row);
+        }
 
         return $data;
     }

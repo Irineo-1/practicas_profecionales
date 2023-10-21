@@ -2,8 +2,6 @@
 
 require_once("conexion.php");
 
-session_start();
-
 class Documentos
 {
 
