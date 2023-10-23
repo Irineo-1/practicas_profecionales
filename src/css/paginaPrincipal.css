@@ -1,0 +1,19 @@
+.container-list-instituciones
+{
+    max-height: 400px;
+    overflow-y: auto;
+    padding: 10px;
+}
+
+.style-item-list
+{
+    margin-bottom: 10px;
+    box-shadow: 0px 0px 7px -3px black;
+    transition: 0.7s;
+}
+
+.style-item-list:hover
+{
+    box-shadow: 0px 3px 20px -3px black;
+    transform: scale(1.01);
+}

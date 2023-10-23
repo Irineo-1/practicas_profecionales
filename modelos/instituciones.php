@@ -11,7 +11,7 @@ class Instituciones
     {
         $cnn = DBConecction::getConnection();
 
-        $sql = "SELECT nombre_empresa, entidad_federativa, tipo_empresa, tipo_institucion FROM ".self::$Tabla."";
+        $sql = "SELECT id, nombre_empresa, entidad_federativa, tipo_empresa, tipo_institucion FROM ".self::$Tabla."";
 
         $res = $cnn->query($sql);
 

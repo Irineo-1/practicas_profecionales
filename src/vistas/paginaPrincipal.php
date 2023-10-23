@@ -7,10 +7,11 @@
     <!-- librerias de front-end -->
     <?php include('src/componentes/vueKit.php'); ?>
     <!-- librerias de front-end -->
+    <link rel="stylesheet" href="src/css/paginaPrincipal.css">
 </head>
 <body>
     <div id="paginaPrincipal">
-        <v-card class="mx-auto" :class="[`elevation-0`]" max-width="800">
+        <v-card class="mx-auto" :class="[`elevation-0`]" max-width="900">
             <v-layout>
                 <v-app-bar color="#6a1c37">
 
@@ -152,47 +153,45 @@
 
                                 <v-window-item :value="2">
                                     <v-card>
-                                        <v-table
-                                            density="compact"
-                                            fixed-header
-                                            height="400px"
+                                        <div>
+                                            <v-container>
+                                                <v-row>
+                                                    <v-col cols="12" xs="1" sm="6">
+                                                        <v-text-field
+                                                        variant="solo"
+                                                        label="Buscar insitucion"
+                                                        density="compact"
+                                                        prepend-inner-icon="mdi-magnify"
+                                                        v-model="buscarEmpresa"
+                                                        >
+                                                        </v-text-field>
+                                                    </v-col>
+                                                    <v-col cols="12" xs="1" sm="6" class="d-flex justify-end">
+                                                        <v-btn>Otra insitucion</v-btn>
+                                                    </v-col>
+                                                </v-row>
+                                            </v-container>
+                                        </div>
+                                        <div
+                                            class="container-list-instituciones"
                                         >
-                                            <thead>
-                                            <tr>
-                                                <th class="text-left">
-                                                nombre_empresa
-                                                </th>
-                                                <th class="text-left">
-                                                entidad_federativa
-                                                </th>
-                                                <th class="text-left">
-                                                tipo_empresa
-                                                </th>
-                                                <th class="text-left">
-                                                tipo_institucion
-                                                </th>
-                                            </tr>
-                                            </thead>
-                                            <tbody>
-                                                <tr v-for="(item,i) in instituciones" :key="i">
-                                                    <td>{{ item.nombre_empresa }}</td>
-                                                    <td>{{ item.entidad_federativa }}</td>
-                                                    <td>{{ item.tipo_empresa }}</td>
-                                                    <td>{{ item.tipo_institucion }}</td>
-                                                </tr>
-                                            </tbody>
-                                        </v-table>
-{{instituciones}}
-                                        <v-card-actions>
-                                            <v-spacer></v-spacer>
-                                            <v-btn
-                                                color="#6a1c37"
-                                                variant="flat"
-                                                @click="subirConstancia"
+                                            <v-list-item
+                                                v-for="instituto, i in resolveInstituciones"
+                                                :key="i"
+                                                :title="instituto.nombre_empresa"
+                                                :subtitle="instituto.entidad_federativa + ' - ' + instituto.tipo_empresa + ' - ' + instituto.tipo_institucion"
+                                                class="style-item-list"
                                             >
-                                                Siguiente
-                                            </v-btn>
-                                        </v-card-actions>
+                                                <template v-slot:append>
+                                                    <v-btn
+                                                        color="#6a1c37"
+                                                        @click="seleccionarEmpresa(instituto.id)"
+                                                    >
+                                                    Seleccionar
+                                                    </v-btn>
+                                                </template>
+                                            </v-list-item>
+                                        </div>
                                     </v-card>
                                 </v-window-item>
                                 </v-window>
