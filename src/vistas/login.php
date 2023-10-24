@@ -7,7 +7,7 @@
     <!-- librerias de front-end -->
     <?php include('src/componentes/vueKit.php'); ?>
     <!-- librerias de front-end -->
-    <style> body{background-image: url('src/img/Pt.jpeg'); background-repeat: no-reapet; color:#FFFF;} </style>
+    <style> body{background-image: url('src/img/Pt.jpg'); background-position: center; background-size: cover; color:#FFFF;} </style>
 </head>
 
 <body>
