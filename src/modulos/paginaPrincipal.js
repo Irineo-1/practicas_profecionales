@@ -1,6 +1,7 @@
 import { createApp, ref, computed, vuetify } from '../componentes/initVue.js'
 import { getUser } from '../componentes/user.js'
 import { getEmpresas } from '../componentes/instituciones.js'
+const { jsPDF } = jspdf
 
 createApp({
   setup()
@@ -48,6 +49,29 @@ createApp({
       })
     }
 
+    const test = () =>
+    {
+      var doc = new jsPDF()
+
+      let test = "<h1>gsdfdsdfs</h1>"
+
+      const parse = new DOMParser()
+
+      let html = parse.parseFromString(test, "text/html")
+
+      console.log(html.documentElement)
+
+      doc.html(html.documentElement, {
+        callback: function(doc) {
+          doc.save('sample-document.pdf')
+      },
+      x: 15,
+      y: 15,
+      width: 170,
+      windowWidth: 650
+    })
+    }
+
     const seleccionarEmpresa = id =>
     {
       console.log(id)
@@ -64,7 +88,8 @@ createApp({
       resolveInstituciones,
       CerrarSesion,
       subirConstancia,
-      seleccionarEmpresa
+      seleccionarEmpresa,
+      test
     }
   },
   async beforeCreate()

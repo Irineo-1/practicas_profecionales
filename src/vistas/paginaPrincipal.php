@@ -167,7 +167,7 @@
                                                         </v-text-field>
                                                     </v-col>
                                                     <v-col cols="12" xs="1" sm="6" class="d-flex justify-end">
-                                                        <v-btn>Otra insitucion</v-btn>
+                                                        <v-btn @click="test">Otra insitucion</v-btn>
                                                     </v-col>
                                                 </v-row>
                                             </v-container>
