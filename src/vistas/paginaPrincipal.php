@@ -167,7 +167,7 @@
                                                         </v-text-field>
                                                     </v-col>
                                                     <v-col cols="12" xs="1" sm="6" class="d-flex justify-end">
-                                                        <v-btn @click="test">Otra insitucion</v-btn>
+                                                        <v-btn>Otra insitucion</v-btn>
                                                     </v-col>
                                                 </v-row>
                                             </v-container>
@@ -179,7 +179,7 @@
                                                 v-for="instituto, i in resolveInstituciones"
                                                 :key="i"
                                                 :title="instituto.nombre_empresa"
-                                                :subtitle="instituto.entidad_federativa + ' - ' + instituto.tipo_empresa + ' - ' + instituto.tipo_institucion"
+                                                :subtitle="instituto.entidad_federativa + ' - ' + instituto.tipo_institucion"
                                                 class="style-item-list"
                                             >
                                                 <template v-slot:append>
@@ -192,6 +192,13 @@
                                                 </template>
                                             </v-list-item>
                                         </div>
+                                    </v-card>
+                                </v-window-item>
+
+                                <!-- // PENDIENTE -->
+                                <v-window-item :value="3">
+                                    <v-card>
+                                    <iframe :src='rutaSolicitud' width='600px' height='600px' frameborder='0'>This is an embedded <a target='_blank' href='http://office.com'>Microsoft Office</a> document, powered by <a target='_blank' href='http://office.com/webapps'>Office Online</a>.</iframe>
                                     </v-card>
                                 </v-window-item>
                                 </v-window>

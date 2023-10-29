@@ -1,7 +1,6 @@
 import { createApp, ref, computed, vuetify } from '../componentes/initVue.js'
 import { getUser } from '../componentes/user.js'
 import { getEmpresas } from '../componentes/instituciones.js'
-const { jsPDF } = jspdf
 
 createApp({
   setup()
@@ -13,6 +12,8 @@ createApp({
     let tituloApartados = ["Servicio social", "Constancia de termino", "Empresas donde deseas hacer tus practicas", "Carta de Presentación"]
     let instituciones = ref([])
     let buscarEmpresa = ref("")
+    let rutaSolicitud = ref("")
+    let rutaSolicitudRespaldo = ref("")
 
     let resolveInstituciones = computed(() => {
       return instituciones.value.filter( el => el.nombre_empresa.toLowerCase().includes(buscarEmpresa.value.toLowerCase()) )
@@ -49,32 +50,24 @@ createApp({
       })
     }
 
-    const test = () =>
-    {
-      var doc = new jsPDF()
-
-      let test = "<h1>gsdfdsdfs</h1>"
-
-      const parse = new DOMParser()
-
-      let html = parse.parseFromString(test, "text/html")
-
-      console.log(html.documentElement)
-
-      doc.html(html.documentElement, {
-        callback: function(doc) {
-          doc.save('sample-document.pdf')
-      },
-      x: 15,
-      y: 15,
-      width: 170,
-      windowWidth: 650
-    })
-    }
-
+    // PENDIENTE
     const seleccionarEmpresa = id =>
     {
-      console.log(id)
+      rutaSolicitud.value = ""
+      let form = new FormData()
+      form.append("action", "generar_solicitud")
+      form.append("id", id)
+      fetch("controladores/stepSection.php", {
+        method: "POST",
+        body: form,
+      })
+      .then(res => res.text())
+      .then(data => {
+        console.log(data)
+        // rutaSolicitud.value = data
+        // rutaSolicitudRespaldo.value = data
+        step.value ++
+      })
     }
 
     return {
@@ -86,10 +79,10 @@ createApp({
       instituciones,
       buscarEmpresa,
       resolveInstituciones,
+      rutaSolicitud,
       CerrarSesion,
       subirConstancia,
-      seleccionarEmpresa,
-      test
+      seleccionarEmpresa
     }
   },
   async beforeCreate()
