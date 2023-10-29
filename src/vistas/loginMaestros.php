@@ -11,9 +11,7 @@
 </head>
 
 <body>
-
-    
-    <div id="login">
+    <div id="loginMaestros">
         
         <v-container style="height: 100vh;">
             <v-row
@@ -51,7 +49,6 @@
                                                     type="number"
                                                     variant="solo"
                                                     Prepend-icon="mdi-account"
-                                                    v-model="nControlLogin"
                                                 ></v-text-field>
                                             </v-col>
                                         </v-row>
@@ -75,10 +72,10 @@
                                     
                                     <v-card-actions>
                                         <v-spacer></v-spacer>
+                                        <!-- :disabled="( nControlLogin.trim() == '' || passLogin.trim() == '') ? true : false" -->
                                         <v-btn
                                             variant="elevated"
                                             color="green-lighten-1"
-                                            :disabled="( nControlLogin.trim() == '' || passLogin.trim() == '') ? true : false"
                                             @click="iniciarSession"
                                         >
                                             Iniciar
@@ -97,7 +94,6 @@
                                                         type="number"
                                                         variant="solo"
                                                         Prepend-icon="mdi-account"
-                                                        v-model="nControlRegister"
                                                     >
                                                     </v-text-field>
                                                 </v-col>
@@ -109,7 +105,6 @@
                                                         type="text"
                                                         variant="solo"
                                                         Prepend-icon="mdi-account-school"
-                                                        v-model="nombreCompleto"
                                                     >
                                                     </v-text-field>
                                                 </v-col>
@@ -147,14 +142,14 @@
                                         
                                         <v-card-actions>
                                             <v-spacer></v-spacer>
+                                            <!-- :disabled="( nControlRegister.trim() == '' ||
+                                                            nombreCompleto.trim() == '' ||
+                                                            passRegister.trim() == '' ||
+                                                            passRegister != passRegisterRepeat ) ? true : false " -->
                                             <v-btn
                                                 variant="elevated"
                                                 color="green-lighten-1"
                                                 @click="registrarUsuario"
-                                                :disabled="( nControlRegister.trim() == '' ||
-                                                            nombreCompleto.trim() == '' ||
-                                                            passRegister.trim() == '' ||
-                                                            passRegister != passRegisterRepeat ) ? true : false "
                                             >
                                                 Registrarse
                                             </v-btn>
@@ -189,7 +184,7 @@
     </div>
 
 
-    <!-- <script type="module" src="src/modulos/loginAlumno.js"></script> -->
+    <script type="module" src="../modulos/loginMaestro.js"></script>
 
 </body>
 </html>
