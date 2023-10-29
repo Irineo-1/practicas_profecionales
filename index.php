@@ -3,7 +3,7 @@
 
     if(!isset($_SESSION["NControl"]))
     {
-        include('src/vistas/login.php'); // pal login papa
+        include('src/vistas/loginAlumno.php'); // pal login papa
     }
     else
     {
