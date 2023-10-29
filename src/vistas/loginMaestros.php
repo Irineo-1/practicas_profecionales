@@ -5,9 +5,9 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Registro Practicas Profesionales</title>
     <!-- librerias de front-end -->
-    <?php include('src/componentes/vueKit.php'); ?>
+    <?php include('../componentes/vueKit.php'); ?>
     <!-- librerias de front-end -->
-    <style> body{background-image: url('src/img/Pt.jpg'); background-position: center; background-size: cover; color:#FFFF;} </style>
+    <style> body{background-image: url('../img/Pt.jpg'); background-position: center; background-size: cover; color:#FFFF;} </style>
 </head>
 
 <body>
@@ -189,7 +189,7 @@
     </div>
 
 
-    <script type="module" src="src/modulos/loginAlumno.js"></script>
+    <!-- <script type="module" src="src/modulos/loginAlumno.js"></script> -->
 
 </body>
 </html>
