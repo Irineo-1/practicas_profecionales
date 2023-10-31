@@ -45,11 +45,13 @@
                                         <v-row>
                                             <v-col>
                                                 <v-text-field
-                                                    label="Numero de control"
-                                                    type="number"
+                                                    label="Correo"
+                                                    :rules="emailRules"
                                                     variant="solo"
-                                                    Prepend-icon="mdi-account"
-                                                ></v-text-field>
+                                                    v-model="correoLogin"
+                                                    Prepend-icon="mdi-email"
+                                                >
+                                                </v-text-field>
                                             </v-col>
                                         </v-row>
                                         <v-row>
@@ -72,10 +74,10 @@
                                     
                                     <v-card-actions>
                                         <v-spacer></v-spacer>
-                                        <!-- :disabled="( nControlLogin.trim() == '' || passLogin.trim() == '') ? true : false" -->
                                         <v-btn
                                             variant="elevated"
                                             color="green-lighten-1"
+                                            :disabled="( correoLogin.trim() == '' || passLogin.trim() == '') ? true : false"
                                             @click="iniciarSession"
                                         >
                                             Iniciar
@@ -90,9 +92,10 @@
                                             <v-row>
                                                 <v-col>
                                                     <v-text-field
-                                                        label="Numero de control"
-                                                        type="number"
+                                                        label="Nombre completo"
+                                                        type="text"
                                                         variant="solo"
+                                                        v-model="nombreCompletoRegistro"
                                                         Prepend-icon="mdi-account"
                                                     >
                                                     </v-text-field>
@@ -101,12 +104,38 @@
                                             <v-row>
                                                 <v-col>
                                                     <v-text-field
-                                                        label="Nombre completo"
-                                                        type="text"
+                                                        label="Correo"
+                                                        :rules="emailRules"
                                                         variant="solo"
-                                                        Prepend-icon="mdi-account-school"
+                                                        v-model="correoRegistro"
+                                                        Prepend-icon="mdi-email"
                                                     >
                                                     </v-text-field>
+                                                </v-col>
+                                            </v-row>
+                                            <v-row>
+                                                <v-col>
+                                                    <v-autocomplete
+                                                        v-model="puesto"
+                                                        :items="puestos"
+                                                        label="Selecciona tu puesto"
+                                                        variant="solo"
+                                                        persistent-hint
+                                                        prepend-icon="mdi-book-account"
+                                                    >
+                                                    </v-autocomplete>
+                                                </v-col>
+                                            </v-row>
+                                            <v-row>
+                                                <v-col>
+                                                    <v-autocomplete
+                                                        v-model="turno"
+                                                        :items="turnos"
+                                                        label="Selecciona tu turno"
+                                                        variant="solo"
+                                                        prepend-icon="mdi-sun-clock"
+                                                    >
+                                                    </v-autocomplete>
                                                 </v-col>
                                             </v-row>
                                             <v-row>
@@ -142,13 +171,16 @@
                                         
                                         <v-card-actions>
                                             <v-spacer></v-spacer>
-                                            <!-- :disabled="( nControlRegister.trim() == '' ||
-                                                            nombreCompleto.trim() == '' ||
-                                                            passRegister.trim() == '' ||
-                                                            passRegister != passRegisterRepeat ) ? true : false " -->
                                             <v-btn
                                                 variant="elevated"
                                                 color="green-lighten-1"
+                                                :disabled="( nombreCompletoRegistro.trim() == '' ||
+                                                            correoRegistro.trim() == '' ||
+                                                            puesto.trim() == '' ||
+                                                            turno.trim() == '' ||
+                                                            passRegister.trim() == '' ||
+                                                            passRegisterRepeat.trim() == '' ||
+                                                            passRegister != passRegisterRepeat ) ? true : false "
                                                 @click="registrarUsuario"
                                             >
                                                 Registrarse
