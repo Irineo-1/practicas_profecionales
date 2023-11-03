@@ -92,7 +92,7 @@ class Alumno
     {
         $cnn = DBConecction::getConnection();
 
-        $sql = "SELECT * FROM ".self::$Tabla."";
+        $sql = "SELECT numero_control, nombre_completo, numero_proceso FROM ".self::$Tabla."";
 
         $res = $cnn->query($sql);
 

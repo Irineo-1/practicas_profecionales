@@ -1,27 +1,26 @@
-const getEmpresas = () =>
+const getMaestro = () =>
 {
     return new Promise((resolve, reject) => {
         let formdata = new FormData()
-        formdata.append("action", "get_instituciones")
-        fetch("controladores/stepSection.php", {
+        formdata.append("action", "get_maestro")
+        fetch("../../controladores/informacionUser.php", {
             method: 'POST',
             body: formdata
         })
         .then(res => res.text())
         .then(data => {
-            console.log(data)
             try
             {
                 resolve(JSON.parse(data))
             }
             catch(e)
             {
-                reject("error al obtener los datos de la empresa: ", e)
+                reject("error al obtener los datos del usuario: ", e)
             }
         })
     })
 }
 
 export {
-    getEmpresas
+    getMaestro
 }

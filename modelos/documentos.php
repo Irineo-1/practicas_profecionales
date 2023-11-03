@@ -22,6 +22,26 @@ class Documentos
 
         return $id;
     }
+
+    public static function getDocumentos( $nControl )
+    {
+        $cnn = DBConecction::getConnection();
+
+        $sql = "SELECT id, nombre_documento, proceso FROM " . self::$Tabla . " WHERE numero_control = '$nControl'";
+
+        $res = $cnn->query($sql);
+
+        $data = [];
+
+        while( $row = $res->fetch_assoc() )
+        {
+            array_push($data, $row);
+        }
+
+        $cnn->close();
+
+        return $data;
+    }
 }
 
 ?>

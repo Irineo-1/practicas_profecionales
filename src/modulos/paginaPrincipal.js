@@ -95,6 +95,7 @@ createApp({
   async beforeCreate()
   {
     let user = await getUser()
+    console.log(user)
     this.userName = user[0].nombre_completo
     this.step = parseInt(user[0].numero_proceso)
 

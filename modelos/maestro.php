@@ -59,7 +59,7 @@ class Maestro
 
         $email = $_SESSION["emailMaestro"];
 
-        $sql = "SELECT nombre, puesto, turno, password FROM " . self::$tabla . " WHERE email = '$email'";
+        $sql = "SELECT nombre, puesto, turno FROM " . self::$tabla . " WHERE email = '$email'";
 
         $res = $cnn->query($sql);
 
