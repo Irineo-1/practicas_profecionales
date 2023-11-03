@@ -32,6 +32,31 @@
         echo json_encode($res);
     }
 
+    if( $_POST["action"] == "get_institucion" )
+    {
+        $id = $_POST["id"];
+
+        $res = Instituciones::getInstitucion( $id );
+
+        echo json_encode($res);
+    }
+
+    if( $_POST["action"] == "generar_solicitud" )
+    {
+        // PENDIENTE
+        $id = $_POST["id"];
+        
+        $plantilla = file_get_contents(dirname(dirname(__FILE__)) . "/templatesDocumentos/pps.rtf");
+        $plantilla = str_replace('#NOMBREINSTITUCION#', 'Texto de ejemplo', $plantilla);
+        
+        $nombre_def = $_SESSION["NControl"].".docx";
+        $route = $_SERVER['DOCUMENT_ROOT']."/practicas_profesionales/templatesDocumentos/";
+
+        file_put_contents( $route . $nombre_def, $plantilla);
+
+        echo "templatesDocumentos/" . $nombre_def;
+    }
+
     function v4() {
         return sprintf('%04x%04x_%04x_%04x_%04x_%04x%04x%04x',
             mt_rand(0, 0xffff), mt_rand(0, 0xffff),
