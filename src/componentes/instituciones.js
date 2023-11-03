@@ -9,7 +9,6 @@ const getEmpresas = () =>
         })
         .then(res => res.text())
         .then(data => {
-            console.log(data)
             try
             {
                 resolve(JSON.parse(data))
