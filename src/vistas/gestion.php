@@ -80,14 +80,14 @@
                                                     style="margin-right: 5px;"
                                                     icon="mdi-file-document-multiple-outline"
                                                     variant="tonal"
-                                                    @click="seeDocuments(alumno.numero_control)"
+                                                    @click="seeDocuments(alumno.numero_control, alumno.nombre_completo)"
                                                 >
                                                 </v-btn>
                                                 <v-btn
                                                     style="margin-right: 5px;"
                                                     icon="mdi-circle-edit-outline"
                                                     variant="tonal"
-                                                    @click="vista = 2"
+                                                    @click="getAlumnoSelected(alumno.id, alumno.nombre_completo)"
                                                 >
                                             </template>
                                         </v-list-item>
@@ -105,6 +105,7 @@
                                                 <v-btn
                                                     icon="mdi-download-circle-outline"
                                                     variant="tonal"
+                                                    @click="downloadDocument(documento.nombre_documento, documento.proceso)"
                                                 ></v-btn>
                                             </template>
                                         </v-list-item>
@@ -120,6 +121,7 @@
                                                 <v-btn
                                                     icon="mdi-download-circle-outline"
                                                     variant="tonal"
+                                                    @click="downloadDocument(documento.nombre_documento, documento.proceso)"
                                                 ></v-btn>
                                             </template>
                                         </v-list-item>
@@ -135,6 +137,7 @@
                                                 <v-btn
                                                     icon="mdi-download-circle-outline"
                                                     variant="tonal"
+                                                    @click="downloadDocument(documento.nombre_documento, documento.proceso)"
                                                 ></v-btn>
                                             </template>
                                         </v-list-item>
@@ -159,6 +162,7 @@
                                                             <v-btn
                                                                 icon="mdi-download-circle-outline"
                                                                 variant="tonal"
+                                                                @click="downloadDocument(documento.nombre_documento, documento.proceso)"
                                                             ></v-btn>
                                                         </template>
                                                     </v-list-item>
@@ -172,8 +176,77 @@
                                     </div>
                                 </v-card>
                                 <v-card class="mx-auto" :class="[`elevation-5`]" v-if="vista == 2">
-                                    documentos
-                                    <v-btn @click="vista = 0">b</v-btn>
+                                    <v-card max-width="400" class="mx-auto" :class="[`elevation-0`]">
+                                    <br>
+                                    <v-alert
+                                        v-if="showAlerta"
+                                        closable
+                                        :title="textoAlerta"
+                                        :type="tipoAlerta"
+                                    ></v-alert>
+                                        <v-container>
+                                            <v-row>
+                                                <v-col>
+                                                    <v-text-field
+                                                        label="Nombre"
+                                                        prepend-icon="mdi-account"
+                                                        variant="solo"
+                                                        v-model="nombreAlumnoSeleccionado"
+                                                    ></v-text-field>
+                                                    <v-text-field
+                                                        label="Nueva contraseña"
+                                                        prepend-icon="mdi-lock-outline"
+                                                        variant="solo"
+                                                        v-model="nuevaPassword"
+                                                    ></v-text-field>
+                                                </v-col>
+                                            </v-row>
+                                        </v-container>
+                                        <v-card-actions>
+                                            <v-spacer></v-spacer>
+                                            <v-btn
+                                                variant="elevated"
+                                                color="green-lighten-1"
+                                                @click="infoAccion = true"
+                                            >
+                                                Actualizar
+                                            </v-btn>
+                                        </v-card-actions>
+                                    </v-card>
+                                    <v-dialog
+                                        width="500"
+                                        v-model="infoAccion"
+                                    >
+                                        <v-card>
+                                            <v-card-title>
+                                                <v-icon color="blue">mdi-alert-circle-outline</v-icon>
+                                                ¿Esta seguro de esta accion?
+                                            </v-card-title>
+
+                                            <v-card-text>
+                                                Se actualizaran los datos modificados del usuario
+                                            </v-card-text>
+
+                                            <v-card-actions>
+                                                <v-spacer></v-spacer>
+                                                <v-btn
+                                                    text="Actualizar"
+                                                    variant="elevated"
+                                                    color="green-lighten-1"
+                                                    @click="actualizarAlumno"
+                                                ></v-btn>
+                                                <v-btn
+                                                    text="Cancelar"
+                                                    variant="elevated"
+                                                    color="red"
+                                                    @click="infoAccion = false"
+                                                ></v-btn>
+                                            </v-card-actions>
+                                        </v-card>
+                                    </v-dialog>
+                                    <div class="d-flex justify-center" style="margin-top: 10px; margin-bottom: 10px;">
+                                        <v-btn icon="mdi-arrow-left" @click="vista = 0"></v-btn>
+                                    </div>
                                 </v-card>
                             </v-col>
                         </v-row>

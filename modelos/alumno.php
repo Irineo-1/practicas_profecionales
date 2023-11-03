@@ -66,6 +66,21 @@ class Alumno
         return 0;
     }
 
+    public static function updateAlumno( $id, $nombre, $pass )
+    {
+        $cnn = DBConecction::getConnection();
+
+        $hashPassword = password::hashPassword($pass);
+
+        $sql = "UPDATE ".self::$Tabla." SET nombre_completo = '$nombre', password = '$hashPassword' WHERE id = '$id'";
+
+        $cnn->query($sql);
+
+        $cnn->close();
+
+        return 0;
+    }
+
     public static function getAlumno()
     {
         $cnn = DBConecction::getConnection();
@@ -92,7 +107,7 @@ class Alumno
     {
         $cnn = DBConecction::getConnection();
 
-        $sql = "SELECT numero_control, nombre_completo, numero_proceso FROM ".self::$Tabla."";
+        $sql = "SELECT id, numero_control, nombre_completo, numero_proceso FROM ".self::$Tabla."";
 
         $res = $cnn->query($sql);
 

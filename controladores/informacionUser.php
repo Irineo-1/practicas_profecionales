@@ -12,6 +12,16 @@
         echo json_encode($res);
     }
 
+    if( $_POST["action"] == "update_alumno" )
+    {
+        $id = $_POST["id"];
+        $nombre = $_POST["nombre"];
+        $pass = $_POST["pass"];
+        
+        $res = Alumno::updateAlumno( $id, $nombre, $pass );
+        echo $res;
+    }
+
     if( $_POST["action"] == "get_maestro" )
     {
         $res = Maestro::getMaestro();
