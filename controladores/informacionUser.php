@@ -28,6 +28,18 @@
         echo json_encode($res);
     }
 
+    if( $_POST["action"] == "get_informes" )
+    {
+        $res = Documentos::getInformes($_SESSION["NControl"]);
+        echo json_encode($res);
+    }
+
+    if( $_POST["action"] == "get_directores" )
+    {
+        $res = Maestro::getDirectores();
+        echo json_encode($res);
+    }
+
     if( $_POST["action"] == "get_users" )
     {
         $res = Alumno::getAlumnos();
@@ -36,7 +48,14 @@
 
     if( $_POST["action"] == "get_documents" )
     {
-        $nControl = $_POST["numeroControl"];
+        if( $_POST["numeroControl"] != "desdeAlumno" )
+        {
+            $nControl = $_POST["numeroControl"];
+        }
+        else
+        {
+            $nControl = $_SESSION["NControl"];
+        }
         $res = Documentos::getDocumentos( $nControl );
         echo json_encode($res);
     }

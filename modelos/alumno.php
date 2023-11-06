@@ -66,6 +66,21 @@ class Alumno
         return 0;
     }
 
+    public static function updateInstitucion( $idInstitucion )
+    {
+        $cnn = DBConecction::getConnection();
+
+        $NCONTROL = $_SESSION["NControl"];
+
+        $sql = "UPDATE ".self::$Tabla." SET institucion = '$idInstitucion' WHERE numero_control = '$NCONTROL'";
+
+        $cnn->query($sql);
+
+        $cnn->close();
+
+        return 0;
+    }
+
     public static function updateAlumno( $id, $nombre, $pass )
     {
         $cnn = DBConecction::getConnection();
@@ -87,7 +102,7 @@ class Alumno
 
         $NCONTROL = $_SESSION["NControl"];
 
-        $sql = "SELECT nombre_completo, numero_proceso FROM ".self::$Tabla." WHERE numero_control = '$NCONTROL'";
+        $sql = "SELECT nombre_completo, numero_proceso, institucion FROM ".self::$Tabla." WHERE numero_control = '$NCONTROL'";
 
         $res = $cnn->query($sql);
 

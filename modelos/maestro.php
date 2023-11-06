@@ -74,6 +74,26 @@ class Maestro
 
         return $data;
     }
+
+    public static function getDirectores()
+    {
+        $cnn = DBConecction::getConnection();
+
+        $sql = "SELECT nombre, turno FROM " . self::$tabla . " WHERE puesto = 'Director'";
+
+        $res = $cnn->query($sql);
+
+        $data = [];
+
+        while($row = $res->fetch_assoc())
+        {
+            array_push($data, $row);
+        }
+
+        $cnn->close();
+
+        return $data;
+    }
 }
 
 ?>

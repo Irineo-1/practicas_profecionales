@@ -1,9 +1,9 @@
-const getUser = () =>
+const getUser = (url) =>
 {
     return new Promise((resolve, reject) => {
         let formdata = new FormData()
         formdata.append("action", "get_user")
-        fetch("controladores/informacionUser.php", {
+        fetch(url, {
             method: 'POST',
             body: formdata
         })

@@ -15,7 +15,7 @@ createApp({
         let vista = ref(0)
         let DOCconstancia_temino_servicio = ref([])
         let DOCsolicitud = ref([])
-        let DOCcarta_precentacion = ref([])
+        let DOCcarta_aceptacion = ref([])
         let DOCfirmado = ref([])
         let panel = ref([])
         let nombreAlumnoSeleccionado = ref("")
@@ -50,7 +50,7 @@ createApp({
             let TotalFiles = await getDocuments(nControl)
             DOCconstancia_temino_servicio.value = TotalFiles.filter(el => el.proceso == "constancia_termino") || []
             DOCsolicitud.value = TotalFiles.filter(el => el.proceso == "solicitud") || []
-            DOCcarta_precentacion.value = TotalFiles.filter(el => el.proceso == "carta_precentacion") || []
+            DOCcarta_aceptacion.value = TotalFiles.filter(el => el.proceso == "carta_aceptacion") || []
             DOCfirmado.value = TotalFiles.filter(el => el.proceso.includes('firmado')) || []
 
             TotalFiles = []
@@ -120,7 +120,7 @@ createApp({
             panel,
             DOCconstancia_temino_servicio,
             DOCsolicitud,
-            DOCcarta_precentacion,
+            DOCcarta_aceptacion,
             nombreAlumnoSeleccionado,
             idAlumnoSeleccionado,
             nuevaPassword,

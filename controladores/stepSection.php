@@ -6,17 +6,18 @@
     require_once(dirname(dirname(__FILE__))."/modelos/alumno.php");
     require_once(dirname(dirname(__FILE__))."/modelos/instituciones.php");
 
-    if( $_POST["action"] == "subir_constancia" )
+    if( $_POST["action"] == "subir_archivo" )
     {
         $constancia = $_FILES["file"];
         $step = $_POST["step"];
+        $proceso = $_POST["proceso"];
         $extension = preg_replace('/^.*\.([^.]+)$/D', "$1", $constancia["name"]);
 
         if(!is_dir("../archivosGuardados")) mkdir("../archivosGuardados");
 
         $final_name = v4().".".$extension;
 
-        $id_file = Documentos::addDocument( $final_name, "constancia_termino" );
+        $id_file = Documentos::addDocument( $final_name, $proceso );
         
         Alumno::updateStep( $step );
 
@@ -43,18 +44,60 @@
 
     if( $_POST["action"] == "generar_solicitud" )
     {
-        // PENDIENTE
         $id = $_POST["id"];
-        
+        $step = $_POST["step"];
+
+        Alumno::updateStep( $step );
+        Alumno::updateInstitucion( $id );
+        $res = Instituciones::getInstitucion( $id );
+
         $plantilla = file_get_contents(dirname(dirname(__FILE__)) . "/templatesDocumentos/pps.rtf");
-        $plantilla = str_replace('#NOMBREINSTITUCION#', 'Texto de ejemplo', $plantilla);
+        $plantilla = str_replace('#NOMBREINSTITUCION#', $res[0]["nombre_empresa"], $plantilla);
+        $plantilla = str_replace('#DOMICILIO#', $res[0]["direccion"], $plantilla);
+        $plantilla = str_replace('#TELEFONO#', $res[0]["telefono"], $plantilla);
+        $plantilla = str_replace('#TITULARDELADEPENDENCIA#', $res[0]["nombre_titular"], $plantilla);
+        $plantilla = str_replace('#CARGO#', $res[0]["puesto_titular"], $plantilla);
+        $plantilla = str_replace('#NOMBREDELASESOR#', $res[0]["nombre_testigo"], $plantilla);
         
-        $nombre_def = $_SESSION["NControl"].".docx";
+        $nombre_def = $_SESSION["NControl"].".doc";
         $route = $_SERVER['DOCUMENT_ROOT']."/practicas_profesionales/templatesDocumentos/";
 
         file_put_contents( $route . $nombre_def, $plantilla);
 
-        echo "templatesDocumentos/" . $nombre_def;
+        echo $nombre_def;
+    }
+
+    if( $_POST["action"] == "generar_carta_presentacion" )
+    {
+        $resAlumno = Alumno::getAlumno();
+        $res = Instituciones::getInstitucion($resAlumno[0]["institucion"]);
+
+        $plantilla = file_get_contents(dirname(dirname(__FILE__)) . "/templatesDocumentos/cp.rtf");
+        $plantilla = str_replace('#FECHAACTUAL#', $_POST["hoy"], $plantilla);
+        $plantilla = str_replace('#TITULARDELADEPENDENCIA#', $res[0]["nombre_titular"], $plantilla);
+        $plantilla = str_replace('#CARGO#', $res[0]["puesto_titular"], $plantilla);
+        $plantilla = str_replace('#NOMBREALUMNO#', $_POST["nombreAlumno"], $plantilla);
+        $plantilla = str_replace('#ESPECIALIDAD#', $_POST["especialidad"], $plantilla);
+        $plantilla = str_replace('#NUMEROCONTROL#', $_SESSION["NControl"], $plantilla);
+        $plantilla = str_replace('#FECHAINICIO#', $_POST["inicio"], $plantilla);
+        $plantilla = str_replace('#AFECHAFIN#', $_POST["fin"], $plantilla);
+        $plantilla = str_replace('#NOMBREDIRECTOR#', $_POST["director"], $plantilla);
+        
+        $nombre_def = $_SESSION["NControl"].".doc";
+        $route = $_SERVER['DOCUMENT_ROOT']."/practicas_profesionales/templatesDocumentos/";
+
+        file_put_contents( $route . $nombre_def, $plantilla);
+
+        echo $nombre_def;
+    }
+
+    if( $_POST["action"] == "eliminar_documento" )
+    {
+        $route = $_SERVER['DOCUMENT_ROOT']."/practicas_profesionales/templatesDocumentos/";
+        if (file_exists($route . $_POST["archivo"]))
+        {
+            unlink($route . $_POST["archivo"]);
+        }
     }
 
     function v4() {

@@ -42,6 +42,26 @@ class Documentos
 
         return $data;
     }
+
+    public static function getInformes( $nControl )
+    {
+        $cnn = DBConecction::getConnection();
+
+        $sql = "SELECT * FROM " . self::$Tabla . " WHERE proceso LIKE '%firmado%' AND numero_control = '$nControl'";
+
+        $res = $cnn->query($sql);
+
+        $data = [];
+
+        while( $row = $res->fetch_assoc() )
+        {
+            array_push($data, $row);
+        }
+
+        $cnn->close();
+
+        return $data;
+    }
 }
 
 ?>

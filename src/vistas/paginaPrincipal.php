@@ -14,6 +14,28 @@
         <v-card class="mx-auto" :class="[`elevation-0`]" max-width="900">
             <v-layout>
                 <v-app-bar color="#6a1c37">
+                    
+                    <v-btn
+                        color="white"
+                        v-if="step == 5"
+                        @click="goToInformes"
+                    >
+                        informes
+                    </v-btn>
+                    
+                    <v-btn
+                        color="white"
+                        icon="mdi-file-cloud"
+                        @click="goToDocumentos"
+                    >
+                    </v-btn>
+                    
+                    <v-btn
+                        color="white"
+                        @click ="CerrarSesion"
+                        icon="mdi-logout-variant"
+                    >
+                    </v-btn>
 
                     <v-spacer></v-spacer>
 
@@ -25,26 +47,8 @@
                                 v-bind="props"
                             >
                             {{ userName }}
-                            <v-icon>mdi-chevron-down</v-icon>
                             </v-btn>
                         </template>
-                        <v-list>
-                            <v-list-item value="1">
-                                <template v-slot:prepend>
-                                    <v-icon>mdi-account-circle</v-icon>
-                                </template>
-                                <v-list-item-title>Perfil</v-list-item-title>
-                            </v-list-item>
-                            <v-list-item value="2">
-                                <template v-slot:prepend>
-                                    <v-icon>mdi-account-off </v-icon>
-                                </template>
-                                
-                                <v-list-item-title @click ="CerrarSesion">Cerrar sesión</v-list-item-title>
-                                 
-
-                            </v-list-item>
-                        </v-list>
                     </v-menu>
                     </div>
                 </v-app-bar>
@@ -130,7 +134,7 @@
                                                 counter
                                                 density="compact"
                                                 accept="image/*,.pdf"
-                                                v-model="constanciaFile"
+                                                v-model="archivo"
                                                 label="Click aqui para subir el documento"
                                             ></v-file-input>
                                         </v-card-text>
@@ -142,8 +146,8 @@
                                             <v-btn
                                                 color="#6a1c37"
                                                 variant="flat"
-                                                @click="subirConstancia"
-                                                :disabled="( constanciaFile.length < 1 ) ? true : false"
+                                                @click="subirArchivo('constancia_termino')"
+                                                :disabled="( archivo.length < 1 ) ? true : false"
                                             >
                                                 Siguiente
                                             </v-btn>
@@ -153,6 +157,9 @@
 
                                 <v-window-item :value="2">
                                     <v-card>
+                                        <v-card-text>
+                                            Preciona descargar para descargar la solicitud de practicas
+                                        </v-card-text>
                                         <div>
                                             <v-container>
                                                 <v-row>
@@ -179,15 +186,15 @@
                                                 v-for="instituto, i in resolveInstituciones"
                                                 :key="i"
                                                 :title="instituto.nombre_empresa"
-                                                :subtitle="instituto.entidad_federativa + ' - ' + instituto.tipo_institucion"
+                                                :subtitle="instituto.entidad_federativa + ' - ' + instituto.direccion"
                                                 class="style-item-list"
                                             >
                                                 <template v-slot:append>
                                                     <v-btn
                                                         color="#6a1c37"
                                                         @click="seleccionarEmpresa(instituto.id)"
+                                                        icon="mdi-download"
                                                     >
-                                                    Seleccionar
                                                     </v-btn>
                                                 </template>
                                             </v-list-item>
@@ -195,10 +202,136 @@
                                     </v-card>
                                 </v-window-item>
 
-                                <!-- // PENDIENTE -->
                                 <v-window-item :value="3">
                                     <v-card>
-                                    <iframe :src='rutaSolicitud' width='600px' height='600px' frameborder='0'>This is an embedded <a target='_blank' href='http://office.com'>Microsoft Office</a> document, powered by <a target='_blank' href='http://office.com/webapps'>Office Online</a>.</iframe>
+                                        <v-card-text>
+                                            <span style="font-weight: 600; font-size: 1.1rem;">Subir solicitud firmada</span>
+                                            <br>
+                                            <span class="text-caption text-grey">Solo PDF</span>
+                                            <br>
+                                            <br>
+                                            <v-file-input
+                                                show-size
+                                                counter
+                                                density="compact"
+                                                accept=".pdf"
+                                                v-model="archivo"
+                                                label="Click aqui para subir el documento"
+                                            ></v-file-input>
+                                        </v-card-text>
+                                        
+                                        <v-divider></v-divider>
+
+                                        <v-card-actions>
+                                            <v-spacer></v-spacer>
+                                            <v-btn
+                                                color="#6a1c37"
+                                                @click="step--"
+                                            >
+                                                Seleccionar otra empresa
+                                            </v-btn>
+                                            <v-btn
+                                                color="#6a1c37"
+                                                variant="flat"
+                                                @click="subirArchivo('solicitud')"
+                                                :disabled="( archivo.length < 1 ) ? true : false"
+                                            >
+                                                Siguiente
+                                            </v-btn>
+                                        </v-card-actions>
+                                    </v-card>
+                                </v-window-item>
+
+                                <v-window-item :value="4">
+                                    <v-card>
+                                        <v-card-text>
+                                            <span style="font-weight: 600; font-size: 1.1rem;">1.- Descargar la carta de presentación y firmarla</span>
+                                            <br>
+                                            <v-container>
+                                                <v-row>
+                                                    <v-col>
+                                                        <h3>Inicio: </h3>
+                                                        <input type="date" v-model="fechaInicio">
+                                                    </v-col>
+                                                    <v-col>
+                                                        <h3>Fin: </h3>
+                                                        <input type="date" v-model="fechaFin">
+                                                    </v-col>
+                                                    <v-col>
+                                                        <v-text-field
+                                                            label="Especialidad"
+                                                            v-model="especialidad"
+                                                            variant="underlined"
+                                                            prepend-icon="mdi-account-hard-hat-outline"
+                                                        >
+                                                        </v-text-field>
+                                                    </v-col>
+                                                    <v-col>
+                                                        <v-autocomplete
+                                                        label="Selecciona un director"
+                                                        v-model="directorAcargo"
+                                                        :items="directores"
+                                                        item-title="nombre"
+                                                        item-value="nombre"
+                                                        variant="underlined"
+                                                        ></v-autocomplete>
+                                                    </v-col>
+                                                </v-row>
+                                            </v-container>
+                                            <v-btn
+                                                append-icon="mdi-download"
+                                                @click="descargarCartaPrecentacion"
+                                                :disabled="( fechaInicio.trim() == '' || fechaFin.trim() == '' || especialidad.trim() == '' || directorAcargo.trim() == '' ) ? true : false"
+                                            >
+                                                Descargar carta de presentación
+                                            </v-btn>
+                                            <br>
+                                            <br>
+                                            <span style="font-weight: 600; font-size: 1.1rem;">2.- Subir carta de aceptación firmada</span>
+                                            <br>
+                                            <span class="text-caption text-grey">Solo PDF</span>
+                                            <br>
+                                            <br>
+                                            <v-file-input
+                                                show-size
+                                                counter
+                                                density="compact"
+                                                accept=".pdf"
+                                                v-model="archivo"
+                                                label="Click aqui para subir el documento"
+                                            ></v-file-input>
+                                        </v-card-text>
+                                        
+                                        <v-divider></v-divider>
+
+                                        <v-card-actions>
+                                            <v-spacer></v-spacer>
+                                            <v-btn
+                                                color="#6a1c37"
+                                                variant="flat"
+                                                @click="subirArchivo('carta_aceptacion')"
+                                                :disabled="( archivo.length < 1 ) ? true : false"
+                                            >
+                                                Siguiente
+                                            </v-btn>
+                                        </v-card-actions>
+                                    </v-card>
+                                </v-window-item>
+
+                                <v-window-item :value="5">
+                                    <v-card>
+                                        <v-card-text>
+                                            <span style="font-weight: 600; font-size: 1.1rem;">1.- Puedes ir a la parte de 'INFORMES' para que subas los informes a su debido tiempo.</span>
+                                            <br>
+                                            <br>
+                                            <span style="font-weight: 600; font-size: 1.1rem;">2.- Ahi mismo podras descargar la plantilla para los informes.</span>
+                                            <br>
+                                            <br>
+                                            <span style="font-weight: 600; font-size: 1.1rem;">3.- En el icono de <v-icon>mdi-file-cloud</v-icon> puedes ver los documentos ya subidos.</span>
+                                            <br>
+                                            <br>
+                                            <span style="font-weight: 600; font-size: 1.1rem;">4.- En el icono de <v-icon>mdi-logout-variant</v-icon> puedes cerrar sesion.</span>
+                                        </v-card-text>
                                     </v-card>
                                 </v-window-item>
                                 </v-window>

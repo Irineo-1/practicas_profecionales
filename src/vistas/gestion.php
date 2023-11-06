@@ -128,7 +128,7 @@
                                     </v-list>
                                     <v-list lines="one">
                                         <v-list-item
-                                            v-for="documento in DOCcarta_precentacion"
+                                            v-for="documento in DOCcarta_aceptacion"
                                             :key="documento.id"
                                             :title="'Constancia de termino del servicio social'"
                                             :subtitle="documento.nombre_documento"
