@@ -7,13 +7,13 @@ class Maestro
 {
     private static $tabla = "maestros";
 
-    public static function registrarMaestro( $nombre, $puesto, $turno, $password )
+    public static function registrarMaestro( $nombre, $puesto, $email, $turno, $password )
     {
         $cnn = DBConecction::getConnection();
 
         $passEncripted = password::hashPassword($password);
 
-        $sql = "INSERT INTO " . self::$tabla . "(nombre, puesto, turno, password) VALUES('$nombre', '$puesto', '$turno', '$passEncripted')";
+        $sql = "INSERT INTO " . self::$tabla . "(nombre, puesto, email, turno, password) VALUES('$nombre', '$puesto', '$email', '$turno', '$passEncripted')";
 
         $cnn->query($sql);
 

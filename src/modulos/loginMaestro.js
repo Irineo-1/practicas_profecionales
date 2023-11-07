@@ -55,6 +55,7 @@ createApp({
             form.append("action", "registrar_maestro")
             form.append("nombre", nombreCompletoRegistro.value)
             form.append("puesto", puesto.value)
+            form.append("email", correoRegistro.value)
             form.append("turno", turno.value)
             form.append("password", passRegister.value)
             fetch("../../controladores/loginSection.php", {

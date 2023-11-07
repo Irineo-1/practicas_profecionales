@@ -19,10 +19,11 @@
     {
         $nombre = $_POST['nombre']; 
         $puesto = $_POST['puesto'];
+        $email = $_POST['email'];
         $turno = $_POST['turno'];
         $password = $_POST['password'];
 
-        $res = Maestro::registrarMaestro( $nombre, $puesto, $turno, $password );
+        $res = Maestro::registrarMaestro( $nombre, $puesto, $email, $turno, $password );
         echo $res;
     }
 
