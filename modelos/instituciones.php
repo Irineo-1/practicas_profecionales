@@ -7,6 +7,18 @@ class Instituciones
 {
     private static $Tabla = "instituciones";
 
+    public static function addInstitucion( $adNombreInstitucion, $adNombreTitular, $adPuestoTitular, $adRfc, $adDireccion, $adTelefono, $adCorreo, $adNombreTestigo, $adPuestoTestigo, $adEntidadFederativa, $adClaveCentro, $adTipoInstitucion )
+    {
+        $cnn = DBConecction::getConnection();
+
+        $sql = "INSERT INTO ".self::$Tabla."(nombre_empresa, nombre_titular, puesto_titular, RFC, direccion, telefono, correo, nombre_testigo, puesto_testigo, entidad_federativa, clave_centro, tipo_institucion) 
+        VALUES('$adNombreInstitucion', '$adNombreTitular', '$adPuestoTitular', '$adRfc', '$adDireccion', '$adTelefono', '$adCorreo', '$adNombreTestigo', '$adPuestoTestigo', '$adEntidadFederativa', '$adClaveCentro', '$adTipoInstitucion')";
+
+        $cnn->query($sql);
+
+        return 0;
+    }
+
     public static function getInstituciones()
     {
         $cnn = DBConecction::getConnection();

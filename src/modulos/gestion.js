@@ -108,6 +108,11 @@ createApp({
             }
         }
 
+        const goToFiles = () =>
+        {
+            window.location.href = "gestionPlantillas.php"
+        }
+
         return {
             nombreMaestro,
             puesto,
@@ -133,7 +138,8 @@ createApp({
             seeDocuments,
             downloadDocument,
             getAlumnoSelected,
-            actualizarAlumno
+            actualizarAlumno,
+            goToFiles
         }
     },
     async created()

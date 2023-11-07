@@ -25,6 +25,23 @@ createApp({
     let directores = ref([])
     let fechaInicio = ref("")
     let fechaFin = ref("")
+    let showFormAddInstitucion = ref(false)
+    let emailRules = ref([value => {
+      const pattern = /^(([^<>()[\]\\.,;:\s@"]+(\.[^<>()[\]\\.,;:\s@"]+)*)|(".+"))@((\[[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}])|(([a-zA-Z\-0-9]+\.)+[a-zA-Z]{2,}))$/
+      return pattern.test(value) || 'Invalid e-mail.'
+    }])
+    let adNombreInstitucion = ref("")
+    let adNombreTitular = ref("")
+    let adPuestoTitular = ref("")
+    let adRfc = ref("")
+    let adDireccion = ref("")
+    let adTelefono = ref("")
+    let adCorreo = ref("")
+    let adNombreTestigo = ref("")
+    let adPuestoTestigo = ref("")
+    let adEntidadFederativa = ref("")
+    let adClaveCentro = ref("")
+    let adTipoInstitucion = ref("")
 
     let resolveInstituciones = computed(() => {
       return instituciones.value.filter( el => el.nombre_empresa.toLowerCase().includes(buscarEmpresa.value.toLowerCase()) )
@@ -122,7 +139,6 @@ createApp({
       })
       .then(res => res.text())
       .then(nameDocument => {
-        console.log(nameDocument)
         fetch(`templatesDocumentos/${nameDocument}`)
         .then(res => res.blob())
         .then((data) => {
@@ -140,6 +156,52 @@ createApp({
               method: "POST",
               body: form,
             })
+        })
+      })
+    }
+
+    const generarConvenio = () =>
+    {
+      const data = new FormData()
+      data.append("action", "generar_convenio")
+      data.append("adNombreInstitucion", adNombreInstitucion.value)
+      data.append("adNombreTitular", adNombreTitular.value)
+      data.append("adPuestoTitular", adPuestoTitular.value)
+      data.append("adRfc", adRfc.value)
+      data.append("adDireccion", adDireccion.value)
+      data.append("adTelefono", adTelefono.value)
+      data.append("adCorreo", adCorreo.value)
+      data.append("adNombreTestigo", adNombreTestigo.value)
+      data.append("adPuestoTestigo", adPuestoTestigo.value)
+      data.append("adEntidadFederativa", adEntidadFederativa.value)
+      data.append("adClaveCentro", adClaveCentro.value)
+      data.append("adTipoInstitucion", adTipoInstitucion.value)
+
+      fetch("controladores/stepSection.php",{
+          method: "POST",
+          body: data,
+      })
+      .then(res => res.text())
+      .then((nameDocument) => {
+        fetch(`templatesDocumentos/${nameDocument}`)
+        .then(res => res.blob())
+        .then(async (data) => {
+            const url = window.URL.createObjectURL(new Blob([data]))
+            const link = document.createElement('a')
+            link.href = url
+            link.setAttribute('download', `Convenio.doc`);
+            document.body.appendChild(link)
+            link.click()
+
+            let form = new FormData()
+            form.append("action", "eliminar_documento")
+            form.append("archivo", nameDocument)
+            fetch(`controladores/stepSection.php`,{
+              method: "POST",
+              body: form,
+            })
+            showFormAddInstitucion.value = false
+            instituciones.value = await getEmpresas()
         })
       })
     }
@@ -170,12 +232,27 @@ createApp({
       fechaFin,
       especialidad,
       directorAcargo,
+      showFormAddInstitucion,
+      adTipoInstitucion,
+      adClaveCentro,
+      adEntidadFederativa,
+      adPuestoTestigo,
+      adNombreTestigo,
+      adCorreo,
+      adTelefono,
+      adDireccion,
+      adRfc,
+      adPuestoTitular,
+      adNombreTitular,
+      adNombreInstitucion,
+      emailRules,
       CerrarSesion,
       seleccionarEmpresa,
       subirArchivo,
       descargarCartaPrecentacion,
       goToInformes,
-      goToDocumentos
+      goToDocumentos,
+      generarConvenio
     }
   },
   async beforeCreate()

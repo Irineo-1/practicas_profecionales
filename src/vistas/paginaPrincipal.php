@@ -174,7 +174,7 @@
                                                         </v-text-field>
                                                     </v-col>
                                                     <v-col cols="12" xs="1" sm="6" class="d-flex justify-end">
-                                                        <v-btn>Otra insitucion</v-btn>
+                                                        <v-btn @click="showFormAddInstitucion = true">Otra insitucion</v-btn>
                                                     </v-col>
                                                 </v-row>
                                             </v-container>
@@ -341,6 +341,51 @@
                     </v-container>
                 </v-main>
             </v-layout>
+
+            <v-dialog
+            v-model="showFormAddInstitucion"
+            persistent
+            width="auto"
+            >
+                <v-card>
+                    <v-card-title class="text-h5">
+                        Agregar institucion
+                    </v-card-title>
+
+                    <v-card-text>
+                        <v-text-field label="Nombre de la institución" variant="underlined" v-model="adNombreInstitucion"></v-text-field>
+                        <v-text-field label="Nombre del titular" variant="underlined" v-model="adNombreTitular"></v-text-field>
+                        <v-text-field label="Puesto del titular" variant="underlined" v-model="adPuestoTitular"></v-text-field>
+                        <v-text-field label="RFC" variant="underlined" v-model="adRfc"></v-text-field>
+                        <v-text-field label="Dirección" variant="underlined" v-model="adDireccion"></v-text-field>
+                        <v-text-field label="Telefono" type="number" variant="underlined" v-model="adTelefono"></v-text-field>
+                        <v-text-field label="Correo" :rules="emailRules" variant="underlined" v-model="adCorreo"></v-text-field>
+                        <v-text-field label="Nombre del testigo" variant="underlined" v-model="adNombreTestigo"></v-text-field>
+                        <v-text-field label="Puesto del testigo" variant="underlined" v-model="adPuestoTestigo"></v-text-field>
+                        <v-text-field label="Entidad federativa" variant="underlined" v-model="adEntidadFederativa"></v-text-field>
+                        <v-text-field label="Clave del centro" variant="underlined" v-model="adClaveCentro"></v-text-field>
+                        <v-text-field label="Tipo de institucion" variant="underlined" v-model="adTipoInstitucion"></v-text-field>
+                    </v-card-text>
+                    
+                    <v-card-actions>
+                        <v-spacer></v-spacer>
+                        <v-btn
+                            color="green-darken-1"
+                            variant="text"
+                            @click="showFormAddInstitucion = false"
+                        >
+                            Cancelar
+                        </v-btn>
+                        <v-btn
+                            color="green-darken-1"
+                            variant="text"
+                            @click="generarConvenio"
+                        >
+                            Generar convenio
+                        </v-btn>
+                    </v-card-actions>
+                </v-card>
+            </v-dialog>
         </v-card>
     </div>
 

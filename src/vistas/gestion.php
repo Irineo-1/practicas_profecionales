@@ -15,6 +15,20 @@
             <v-layout>
                 <v-app-bar color="#6a1c37">
 
+                    <v-btn
+                        color="white"
+                        @click="goToFiles"
+                        icon="mdi-file-cloud"
+                    >
+                    </v-btn>
+
+                    <v-btn
+                        color="white"
+                        @click="CerrarSesion"
+                        icon="mdi-logout-variant"
+                    >
+                    </v-btn>
+
                     <v-spacer></v-spacer>
 
                     <div class="text-center">
@@ -25,19 +39,8 @@
                                 v-bind="props"
                             >
                             {{ nombreMaestro }} - {{ puesto }} - {{ turno }}
-                            <v-icon>mdi-chevron-down</v-icon>
                             </v-btn>
                         </template>
-                        <v-list>
-                            <v-list-item value="2">
-                                <template v-slot:prepend>
-                                    <v-icon>mdi-account-off </v-icon>
-                                </template>
-                                
-                                <v-list-item-title @click="CerrarSesion">Cerrar sesión</v-list-item-title>
-                                 
-                            </v-list-item>
-                        </v-list>
                     </v-menu>
                     </div>
                 </v-app-bar>

@@ -91,6 +91,39 @@
         echo $nombre_def;
     }
 
+    if( $_POST["action"] == "generar_convenio" )
+    {
+        $adNombreInstitucion = $_POST["adNombreInstitucion"];
+        $adNombreTitular = $_POST["adNombreTitular"];
+        $adPuestoTitular = $_POST["adPuestoTitular"];
+        $adRfc = $_POST["adRfc"];
+        $adDireccion = $_POST["adDireccion"];
+        $adTelefono = $_POST["adTelefono"];
+        $adCorreo = $_POST["adCorreo"];
+        $adNombreTestigo = $_POST["adNombreTestigo"];
+        $adPuestoTestigo = $_POST["adPuestoTestigo"];
+        $adEntidadFederativa = $_POST["adEntidadFederativa"];
+        $adClaveCentro = $_POST["adClaveCentro"];
+        $adTipoInstitucion = $_POST["adTipoInstitucion"];
+
+        Instituciones::addInstitucion($adNombreInstitucion, $adNombreTitular, $adPuestoTitular, $adRfc, $adDireccion, $adTelefono, $adCorreo, $adNombreTestigo, $adPuestoTestigo, $adEntidadFederativa, $adClaveCentro, $adTipoInstitucion);
+
+        $plantilla = file_get_contents(dirname(dirname(__FILE__)) . "/templatesDocumentos/cpa.rtf");
+        $plantilla = str_replace('#NOMBREEMPRESA#', $adNombreInstitucion, $plantilla);
+        $plantilla = str_replace('#TITULARDELADEPENDENCIA#', $adNombreTitular, $plantilla);
+        $plantilla = str_replace('#RFC#', $adRfc, $plantilla);
+        $plantilla = str_replace('#DOMICILIO#', $adDireccion, $plantilla);
+        $plantilla = str_replace('#TELEFONO#', $adTelefono, $plantilla);
+        $plantilla = str_replace('##correo##', $adCorreo, $plantilla);
+        
+        $nombre_def = $_SESSION["NControl"].".doc";
+        $route = $_SERVER['DOCUMENT_ROOT']."/practicas_profesionales/templatesDocumentos/";
+
+        file_put_contents( $route . $nombre_def, $plantilla);
+
+        echo $nombre_def;
+    }
+
     if( $_POST["action"] == "eliminar_documento" )
     {
         $route = $_SERVER['DOCUMENT_ROOT']."/practicas_profesionales/templatesDocumentos/";
@@ -98,6 +131,16 @@
         {
             unlink($route . $_POST["archivo"]);
         }
+    }
+
+    if( $_POST["action"] == "reemplasar_plantilla" )
+    {
+        $constancia = $_FILES["file"];
+        $nameFile = $_POST["nameFile"];
+
+        if(!is_dir("../archivosGuardados")) mkdir("../archivosGuardados");
+
+        move_uploaded_file($constancia["tmp_name"], "../templatesDocumentos/".$nameFile);
     }
 
     function v4() {
