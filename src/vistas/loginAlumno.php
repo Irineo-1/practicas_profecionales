@@ -116,6 +116,30 @@
                                             </v-row>
                                             <v-row>
                                                 <v-col>
+                                                    <v-autocomplete
+                                                        v-model="turno"
+                                                        :items="turnos"
+                                                        label="Selecciona tu turno"
+                                                        variant="solo"
+                                                        prepend-icon="mdi-sun-clock"
+                                                    >
+                                                    </v-autocomplete>
+                                                </v-col>
+                                            </v-row>
+                                            <v-row>
+                                                <v-col>
+                                                    <v-autocomplete
+                                                        v-model="especialidad"
+                                                        :items="especialidades"
+                                                        label="Selecciona tu turno"
+                                                        variant="solo"
+                                                        prepend-icon="mdi-sun-clock"
+                                                    >
+                                                    </v-autocomplete>
+                                                </v-col>
+                                            </v-row>
+                                            <v-row>
+                                                <v-col>
                                                     <v-text-field
                                                         label="Contraseña"
                                                         :type="typeInputPassword"

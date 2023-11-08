@@ -12,6 +12,7 @@ createApp({
         let DOCcarta_aceptacion = ref([])
         let DOCsolicitud = ref([])
         let DOCconstancia_temino_servicio = ref([])
+        let step = ref(0)
 
         const CerrarSesion = () =>
         {
@@ -45,6 +46,11 @@ createApp({
           window.location.href = "informes.php"
         }
 
+        const goToProceso = () =>
+        {
+          window.location.href = "../../index.php"
+        }
+
         return {
             userName,
             archivo,
@@ -53,15 +59,18 @@ createApp({
             DOCcarta_aceptacion,
             DOCsolicitud,
             DOCconstancia_temino_servicio,
+            step,
             CerrarSesion,
             downloadDocument,
-            goToInformes
+            goToInformes,
+            goToProceso
         }
     },
     async created()
     {
         let user = await getUser("../../controladores/informacionUser.php")
         this.userName = user[0].nombre_completo
+        this.step = parseInt(user[0].numero_proceso)
 
         let TotalFiles = await getDocuments("desdeAlumno")
         this.DOCconstancia_temino_servicio = TotalFiles.filter(el => el.proceso == "constancia_termino") || []

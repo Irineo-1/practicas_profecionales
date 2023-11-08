@@ -19,6 +19,8 @@ class Maestro
 
         $cnn->close();
 
+        $_SESSION["emailMaestro"] = $email;
+
         return 1;
     }
 
@@ -36,9 +38,6 @@ class Maestro
         {
             if(password::verificarPassword($password, $row["password"]))
             {
-                $_SESSION["nombreMaestro"] = $row["nombre"];
-                $_SESSION["puestoMaestro"] = $row["puesto"];
-                $_SESSION["turnoMaestro"] = $row["turno"];
                 $_SESSION["emailMaestro"] = $email;
                 $out = 1;
             }

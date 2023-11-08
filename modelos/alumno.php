@@ -7,13 +7,13 @@ class Alumno
 {
     private static $Tabla = "alumnos";
 
-    public static function registrarUsuario( $numero_control, $nombre, $password )
+    public static function registrarUsuario( $numero_control, $nombre, $especialidad, $turno, $password )
     {
         $hashPassword = password::hashPassword($password);
 
         $cnn = DBConecction::getConnection();
 
-        $sql = "INSERT INTO ".self::$Tabla."(numero_control, nombre_completo, password) VALUES('$numero_control', '$nombre', '$hashPassword')";
+        $sql = "INSERT INTO ".self::$Tabla."(numero_control, nombre_completo, especialidad, turno, password) VALUES('$numero_control', '$nombre', '$especialidad', '$turno', '$hashPassword')";
 
         $cnn->query($sql);
 

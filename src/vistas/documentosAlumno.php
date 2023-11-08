@@ -16,8 +16,17 @@
                     <v-btn
                         color="white"
                         @click="goToInformes"
+                        v-if="step == 5"
                     >
                         informes
+                    </v-btn>
+                    
+                    <v-btn
+                        color="white"
+                        @click="goToProceso"
+                        v-if="step < 5"
+                    >
+                        Proceso
                     </v-btn>
                     
                     <v-btn

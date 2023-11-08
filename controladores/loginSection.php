@@ -9,9 +9,11 @@
     {
         $numero_control = $_POST['numero_control'];
         $nombre = $_POST['nombre'];
+        $especialidad = $_POST['especialidad'];
+        $turno = $_POST['turno'];
         $password = $_POST['password'];
 
-        $res = Alumno::registrarUsuario( $numero_control, $nombre, $password );
+        $res = Alumno::registrarUsuario( $numero_control, $nombre, $especialidad, $turno, $password );
         echo $res;
     }
 

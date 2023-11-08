@@ -16,6 +16,10 @@ createApp({
         let smsError = ref(false)
         let samePasssword = ref([ value => value == passRegister.value || 'Las contraseñas no coinciden' ])
         let texto_error = ref("")
+        let turnos = ref(["Verspertino", "Matutino"])
+        let especialidades = ref(["Medios de comunicacion", "Programacion", "Elecricidad", "Laboratorista quimico", "Ventas", "Contabilidad", "Preparacion de alimentos y bebidas"])
+        let turno = ref("")
+        let especialidad = ref("")
 
         const iniciarSession = () =>
         {
@@ -50,6 +54,8 @@ createApp({
             formData.append('action', 'registrar_usuario');
             formData.append('numero_control', nControlRegister.value);
             formData.append('nombre', nombreCompleto.value);
+            formData.append('especialidad', especialidad.value);
+            formData.append('turno', turno.value);
             formData.append('password', passRegister.value);
             
             fetch('controladores/loginSection.php', {
@@ -97,6 +103,10 @@ createApp({
             nombreCompleto,
             smsError,
             texto_error,
+            turnos,
+            turno,
+            especialidad,
+            especialidades,
             toggleTypeOfInputPassword,
             iniciarSession,
             registrarUsuario,
