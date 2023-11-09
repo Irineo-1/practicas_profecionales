@@ -19,11 +19,42 @@
 
         $id_file = Documentos::addDocument( $final_name, $proceso );
         
-        Alumno::updateStep( $step );
+        if( $proceso != "solicitud" && $proceso != "carta_aceptacion" )
+        {
+            Alumno::updateStep( $step );
+        }
 
         move_uploaded_file($constancia["tmp_name"], "../archivosGuardados/".$final_name);
 
         echo $id_file;
+    }
+
+    if( $_POST["action"] == "get_status_document" )
+    {
+        $process = $_POST["process"];
+
+        $res = Documentos::getStatusDocumentos( $process, $_SESSION["NControl"] );
+
+        echo json_encode($res);
+    }
+    
+    if( $_POST["action"] == "update_step" )
+    {
+        $step = $_POST["step"];
+        Alumno::updateStep( $step );
+    }
+
+    if( $_POST["action"] == "clean_process" )
+    {
+        $proceso = $_POST["proceso"];
+
+        $route = $_SERVER['DOCUMENT_ROOT']."/practicas_profesionales/archivosGuardados/";
+        if (file_exists($route . $_POST["nombreArchivo"]))
+        {
+            unlink($route . $_POST["nombreArchivo"]);
+        }
+
+        Documentos::deleteDocument( $proceso, $_SESSION["NControl"] );
     }
 
     if( $_POST["action"] == "get_instituciones" )
@@ -77,7 +108,7 @@
         $plantilla = str_replace('#TITULARDELADEPENDENCIA#', $res[0]["nombre_titular"], $plantilla);
         $plantilla = str_replace('#CARGO#', $res[0]["puesto_titular"], $plantilla);
         $plantilla = str_replace('#NOMBREALUMNO#', $_POST["nombreAlumno"], $plantilla);
-        $plantilla = str_replace('#ESPECIALIDAD#', $_POST["especialidad"], $plantilla);
+        $plantilla = str_replace('#ESPECIALIDAD#', $resAlumno[0]["especialidad"], $plantilla);
         $plantilla = str_replace('#NUMEROCONTROL#', $_SESSION["NControl"], $plantilla);
         $plantilla = str_replace('#FECHAINICIO#', $_POST["inicio"], $plantilla);
         $plantilla = str_replace('#AFECHAFIN#', $_POST["fin"], $plantilla);

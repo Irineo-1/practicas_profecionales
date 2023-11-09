@@ -16,7 +16,6 @@ createApp({
     "Solicitud de practicas profecionales",
     "Carta de precentación", "Final"]
     let meses = ref(["Enero", "Febrero", "Marzo", "Abril", "Mayo", "Junio", "Julio", "Agosto", "Septiembre", "Octubre", "Noviembre", "Diciembre"])
-    let especialidad = ref('')
     let directorAcargo = ref('')
     let instituciones = ref([])
     let solicitudFile = ref([])
@@ -42,6 +41,13 @@ createApp({
     let adEntidadFederativa = ref("")
     let adClaveCentro = ref("")
     let adTipoInstitucion = ref("")
+    let mensajeStatusDocumentos = ref("")
+    let statusSolicitud = ref(0)
+    let statusCartaAceptacion = ref(0)
+    let idDocumentoSolicitud = ref(0)
+    let nombreDocumentoSolicitud = ref("")
+    let idDocumentoCartaAceptacion = ref(0)
+    let nombreDocumentoCartaAceptacion = ref("")
 
     let resolveInstituciones = computed(() => {
       return instituciones.value.filter( el => el.nombre_empresa.toLowerCase().includes(buscarEmpresa.value.toLowerCase()) )
@@ -74,9 +80,23 @@ createApp({
           body: data,
       })
       .then(res => res.text())
-      .then(() => {
+      .then(async () => {
         archivo.value = []
-        step.value ++
+        
+        if( proceso != "solicitud" && proceso != "carta_aceptacion" ) step.value ++
+        
+        let statusSD = await getStatusDocumento(proceso)
+        statusSolicitud.value = statusSD[0].estatus
+        idDocumentoSolicitud.value = statusSD[0].id
+        nombreDocumentoSolicitud.value = statusSD[0].nombre_documento
+
+        let statusCAD = await getStatusDocumento(proceso)
+        statusCartaAceptacion.value = statusCAD[0].estatus
+        idDocumentoCartaAceptacion.value = statusCAD[0].id
+        nombreDocumentoCartaAceptacion.value = statusCAD[0].nombre_documento
+
+        statusSD = []
+        mensajeStatusDocumentos.value = "Para poder continuar una persona ahotorizada tendra que revisar el documento proporcionado"
       })
     }
  
@@ -108,6 +128,7 @@ createApp({
               method: "POST",
               body: form,
             })
+            statusSolicitud.value = 3
             step.value ++
         })
       })
@@ -130,7 +151,6 @@ createApp({
       form.append("hoy", formatoToday)
       form.append("inicio", fechaInicioWF)
       form.append("fin", fechaFinWF)
-      form.append("especialidad", especialidad.value)
       form.append("director", directorAcargo.value)
       form.append("nombreAlumno", userName.value)
       fetch("controladores/stepSection.php", {
@@ -206,6 +226,66 @@ createApp({
       })
     }
 
+    const updateStep = () =>
+    {
+      let form = new FormData()
+      form.append("action", "update_step")
+      form.append("step", step.value + 1)
+
+      fetch("controladores/stepSection.php", {
+        method: "POST",
+        body: form,
+      })
+      
+      step.value ++
+    }
+
+    const cleanProcess = ( proceso ) =>
+    {
+      let form = new FormData()
+      form.append("action", "clean_process")
+      form.append("proceso", proceso)
+      if( proceso == "solicitud" )
+      {
+        form.append("nombreArchivo", nombreDocumentoSolicitud.value)
+      }
+      else
+      {
+        form.append("nombreArchivo", nombreDocumentoCartaAceptacion.value)
+      }
+
+      fetch("controladores/stepSection.php", {
+        method: "POST",
+        body: form,
+      })
+
+      statusSolicitud.value = 3
+      idDocumentoSolicitud.value = 0
+      nombreDocumentoSolicitud.value = ""
+
+      statusCartaAceptacion.value = 3
+      idDocumentoCartaAceptacion.value = 0
+      nombreDocumentoCartaAceptacion.value = ""
+    }
+
+    const getStatusDocumento = ( proceso ) =>
+    {
+      return new Promise((resolve) => {
+        let form = new FormData()
+        form.append("action", "get_status_document")
+        form.append("process", proceso)
+  
+        fetch("controladores/stepSection.php", {
+          method: "POST",
+          body: form,
+        })
+        .then(res => res.text())
+        .then(data => {
+          resolve(JSON.parse(data))
+        })
+      })
+    }
+
     const goToInformes = () =>
     {
       window.location.href = "src/vistas/informes.php"
@@ -230,7 +310,6 @@ createApp({
       directores,
       fechaInicio,
       fechaFin,
-      especialidad,
       directorAcargo,
       showFormAddInstitucion,
       adTipoInstitucion,
@@ -246,20 +325,64 @@ createApp({
       adNombreTitular,
       adNombreInstitucion,
       emailRules,
+      statusSolicitud,
+      idDocumentoSolicitud,
+      nombreDocumentoSolicitud,
+      statusCartaAceptacion,
+      mensajeStatusDocumentos,
+      idDocumentoCartaAceptacion,
+      nombreDocumentoCartaAceptacion,
       CerrarSesion,
       seleccionarEmpresa,
       subirArchivo,
       descargarCartaPrecentacion,
       goToInformes,
       goToDocumentos,
-      generarConvenio
+      generarConvenio,
+      updateStep,
+      cleanProcess,
+      getStatusDocumento
     }
   },
   async beforeCreate()
   {
+    let smsInfo = "Para poder continuar una persona ahotorizada tendrá que revisar el documento proporcionado, puedes acercarte a una persona ahotorizada para que revise tu documento."
+    let smsRechasado = "Lo sentimos, el documento fue rechazado porque no cumple con las características requeridas."
+    let smsAceptado = "Tu documento fue aceptado."
+
     let user = await getUser("controladores/informacionUser.php")
     this.userName = user[0].nombre_completo
     this.step = parseInt(user[0].numero_proceso)
+    user = []
+
+    let statusSD = await this.getStatusDocumento("solicitud")
+    let statusCAD = await this.getStatusDocumento("carta_aceptacion")
+    
+    if( statusSD.length == 0 )
+    {
+      this.statusSolicitud = 3
+    }
+    else
+    {
+      this.statusSolicitud = statusSD[0].estatus
+      this.idDocumentoSolicitud = statusSD[0].id
+      this.nombreDocumentoSolicitud = statusSD[0].nombre_documento
+      this.mensajeStatusDocumentos = (this.statusSolicitud == 1) ? smsInfo : (this.statusSolicitud == 0) ? smsRechasado : (this.statusSolicitud == 2) ? smsAceptado : ''
+      statusSD = []
+    }
+
+    if( statusCAD.length == 0 )
+    {
+      this.statusCartaAceptacion = 3
+    }
+    else
+    {
+      this.statusCartaAceptacion = statusCAD[0].estatus
+      this.idDocumentoCartaAceptacion = statusCAD[0].id
+      this.nombreDocumentoCartaAceptacion = statusCAD[0].nombre_documento
+      this.mensajeStatusDocumentos = (this.statusCartaAceptacion == 1) ? smsInfo : (this.statusCartaAceptacion == 0) ? smsRechasado : (this.statusCartaAceptacion == 2) ? smsAceptado : ''
+    }
+
     this.directores = await getDirectores()
     this.instituciones = await getEmpresas()
   }

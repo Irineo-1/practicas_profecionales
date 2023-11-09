@@ -1,4 +1,4 @@
-import { createApp, ref, computed, vuetify } from '../componentes/initVue.js'
+import { createApp, ref, computed, watch, vuetify } from '../componentes/initVue.js'
 import { getMaestro } from '../componentes/maestros.js'
 import { getUsers } from '../componentes/user.js'
 import { getDocuments } from '../componentes/user.js'
@@ -25,10 +25,52 @@ createApp({
         let infoAccion = ref(false)
         let showAlerta = ref(false)
         let tipoAlerta = ref("")
+        let statusSolicitud = ref(100)
+        let statusCartaAceptacion = ref(100)
+        let idDocumentoSolicitud = ref(100)
+        let idDocumentoCartaAceptacion = ref(100)
+        let estados = ref([{
+            "estado": "Aprovado",
+            "value": 2
+        },
+        {
+            "estado": "En espera",
+            "value": 1
+        },
+        {
+            "estado": "Rechasado",
+            "value": 0
+        }])
 
         let cpmAlumnos = computed(() => {
             if( sinServicio.value ) return alumnos.value.filter(el => el.numero_proceso == 0)
             return alumnos.value.filter(el => el.nombre_completo.toLowerCase().includes(buscarAlumno.value.toLowerCase()))
+        })
+
+        watch(statusSolicitud, (antVal, prevVal) => {
+            if ( prevVal == 100 ) return
+            let form = new FormData()
+            form.append('action', 'update_estatus_documento')
+            form.append('estatus', antVal)
+            form.append('id', idDocumentoSolicitud.value)
+
+            fetch("../../controladores/informacionUser.php", {
+                method: "POST",
+                body: form,
+            })
+        })
+
+        watch(statusCartaAceptacion, (antVal, prevVal) => {
+            if ( prevVal == 100 ) return
+            let form = new FormData()
+            form.append('action', 'update_estatus_documento')
+            form.append('estatus', antVal)
+            form.append('id', idDocumentoCartaAceptacion.value)
+
+            fetch("../../controladores/informacionUser.php", {
+                method: "POST",
+                body: form,
+            })
         })
 
         const CerrarSesion = () =>
@@ -52,6 +94,18 @@ createApp({
             DOCsolicitud.value = TotalFiles.filter(el => el.proceso == "solicitud") || []
             DOCcarta_aceptacion.value = TotalFiles.filter(el => el.proceso == "carta_aceptacion") || []
             DOCfirmado.value = TotalFiles.filter(el => el.proceso.includes('firmado')) || []
+
+            if(DOCsolicitud.value.length > 0)
+            {
+                statusSolicitud.value = parseInt(DOCsolicitud.value[0].estatus)
+                idDocumentoSolicitud.value = parseInt(DOCsolicitud.value[0].id)
+            }
+
+            if(DOCcarta_aceptacion.value.length > 0)
+            {
+                statusCartaAceptacion.value = parseInt(DOCcarta_aceptacion.value[0].estatus)
+                idDocumentoCartaAceptacion.value = parseInt(DOCcarta_aceptacion.value[0].id)
+            }
 
             TotalFiles = []
 
@@ -134,6 +188,9 @@ createApp({
             showAlerta,
             textoAlerta,
             tipoAlerta,
+            statusSolicitud,
+            estados,
+            statusCartaAceptacion,
             CerrarSesion,
             seeDocuments,
             downloadDocument,

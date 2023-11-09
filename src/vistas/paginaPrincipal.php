@@ -158,7 +158,7 @@
                                 <v-window-item :value="2">
                                     <v-card>
                                         <v-card-text>
-                                            Preciona descargar para descargar la solicitud de practicas
+                                            Preciona el boton <v-btn color="#6a1c37" size="x-small" icon="mdi-download"></v-btn> para descargar la solicitud de practicas
                                         </v-card-text>
                                         <div>
                                             <v-container>
@@ -203,7 +203,7 @@
                                 </v-window-item>
 
                                 <v-window-item :value="3">
-                                    <v-card>
+                                    <v-card v-if="statusSolicitud == 3">
                                         <v-card-text>
                                             <span style="font-weight: 600; font-size: 1.1rem;">Subir solicitud firmada</span>
                                             <br>
@@ -236,14 +236,47 @@
                                                 @click="subirArchivo('solicitud')"
                                                 :disabled="( archivo.length < 1 ) ? true : false"
                                             >
-                                                Siguiente
+                                                Subir
+                                            </v-btn>
+                                        </v-card-actions>
+                                    </v-card>
+                                    <v-card v-else>
+                                        <v-card-text>
+                                            <v-alert
+                                                :title="(statusSolicitud == 1) ? 'En espera' : (statusSolicitud == 0) ? 'Rechasado' : (statusSolicitud == 2) ? 'Aceptado' : ''"
+                                                variant="outlined"
+                                                border="bottom"
+                                                :text="mensajeStatusDocumentos"
+                                                :type="(statusSolicitud == 1) ? 'info' : (statusSolicitud == 0) ? 'error' : (statusSolicitud == 2) ? 'success' : ''"
+                                            ></v-alert>
+                                        </v-card-text>
+                                        
+                                        <v-divider></v-divider>
+
+                                        <v-card-actions>
+                                            <v-spacer></v-spacer>
+                                            <v-btn
+                                                v-if="statusSolicitud == 0"
+                                                color="#6a1c37"
+                                                variant="flat"
+                                                @click="cleanProcess('solicitud')"
+                                            >
+                                                Volver a subir el documento
+                                            </v-btn>
+                                            <v-btn
+                                                color="#6a1c37"
+                                                variant="flat"
+                                                @click="updateStep"
+                                                :disabled="( statusSolicitud == 1 || statusSolicitud == 0 ) ? true : false"
+                                            >
+                                                siguiente
                                             </v-btn>
                                         </v-card-actions>
                                     </v-card>
                                 </v-window-item>
 
                                 <v-window-item :value="4">
-                                    <v-card>
+                                    <v-card v-if="statusCartaAceptacion == 3">
                                         <v-card-text>
                                             <span style="font-weight: 600; font-size: 1.1rem;">1.- Descargar la carta de presentación y firmarla</span>
                                             <br>
@@ -258,30 +291,21 @@
                                                         <input type="date" v-model="fechaFin">
                                                     </v-col>
                                                     <v-col>
-                                                        <v-text-field
-                                                            label="Especialidad"
-                                                            v-model="especialidad"
-                                                            variant="underlined"
-                                                            prepend-icon="mdi-account-hard-hat-outline"
-                                                        >
-                                                        </v-text-field>
-                                                    </v-col>
-                                                    <v-col>
-                                                        <v-autocomplete
+                                                        <v-select
                                                         label="Selecciona un director"
                                                         v-model="directorAcargo"
                                                         :items="directores"
                                                         item-title="nombre"
                                                         item-value="nombre"
                                                         variant="underlined"
-                                                        ></v-autocomplete>
+                                                        ></v-select>
                                                     </v-col>
                                                 </v-row>
                                             </v-container>
                                             <v-btn
                                                 append-icon="mdi-download"
                                                 @click="descargarCartaPrecentacion"
-                                                :disabled="( fechaInicio.trim() == '' || fechaFin.trim() == '' || especialidad.trim() == '' || directorAcargo.trim() == '' ) ? true : false"
+                                                :disabled="( fechaInicio.trim() == '' || fechaFin.trim() == '' || directorAcargo.trim() == '' ) ? true : false"
                                             >
                                                 Descargar carta de presentación
                                             </v-btn>
@@ -313,6 +337,39 @@
                                                 :disabled="( archivo.length < 1 ) ? true : false"
                                             >
                                                 Siguiente
+                                            </v-btn>
+                                        </v-card-actions>
+                                    </v-card>
+                                    <v-card v-else>
+                                        <v-card-text>
+                                            <v-alert
+                                                :title="(statusCartaAceptacion == 1) ? 'En espera' : (statusCartaAceptacion == 0) ? 'Rechasado' : (statusCartaAceptacion == 2) ? 'Aceptado' : ''"
+                                                variant="outlined"
+                                                border="bottom"
+                                                :text="mensajeStatusDocumentos"
+                                                :type="(statusCartaAceptacion == 1) ? 'info' : (statusCartaAceptacion == 0) ? 'error' : (statusCartaAceptacion == 2) ? 'success' : ''"
+                                            ></v-alert>
+                                        </v-card-text>
+                                        
+                                        <v-divider></v-divider>
+
+                                        <v-card-actions>
+                                            <v-spacer></v-spacer>
+                                            <v-btn
+                                                v-if="statusCartaAceptacion == 0"
+                                                color="#6a1c37"
+                                                variant="flat"
+                                                @click="cleanProcess('carta_aceptacion')"
+                                            >
+                                                Volver a subir el documento
+                                            </v-btn>
+                                            <v-btn
+                                                color="#6a1c37"
+                                                variant="flat"
+                                                @click="updateStep"
+                                                :disabled="( statusCartaAceptacion == 1 || statusCartaAceptacion == 0 ) ? true : false"
+                                            >
+                                                siguiente
                                             </v-btn>
                                         </v-card-actions>
                                     </v-card>

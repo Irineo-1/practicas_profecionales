@@ -1,4 +1,4 @@
-const { createApp, ref, computed } = Vue
+const { createApp, ref, computed, watch } = Vue
 const { createVuetify } = Vuetify
 
 const vuetify = createVuetify({
@@ -11,5 +11,6 @@ export{
     createApp,
     ref,
     computed,
-    vuetify
+    vuetify,
+    watch
 }

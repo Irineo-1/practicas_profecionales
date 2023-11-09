@@ -22,6 +22,14 @@
         echo $res;
     }
 
+    if( $_POST["action"] == "update_estatus_documento" )
+    {
+        $id = $_POST["id"];
+        $estatus = $_POST["estatus"];
+
+        Documentos::updateStatusDocumentos($id, $estatus);
+    }
+
     if( $_POST["action"] == "get_maestro" )
     {
         $res = Maestro::getMaestro();

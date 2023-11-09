@@ -102,7 +102,7 @@ class Alumno
 
         $NCONTROL = $_SESSION["NControl"];
 
-        $sql = "SELECT nombre_completo, numero_proceso, institucion FROM ".self::$Tabla." WHERE numero_control = '$NCONTROL'";
+        $sql = "SELECT nombre_completo, numero_proceso, institucion, especialidad FROM ".self::$Tabla." WHERE numero_control = '$NCONTROL'";
 
         $res = $cnn->query($sql);
 
@@ -122,7 +122,7 @@ class Alumno
     {
         $cnn = DBConecction::getConnection();
 
-        $sql = "SELECT id, numero_control, nombre_completo, numero_proceso FROM ".self::$Tabla."";
+        $sql = "SELECT id, numero_control, nombre_completo, numero_proceso, turno FROM ".self::$Tabla."";
 
         $res = $cnn->query($sql);
 

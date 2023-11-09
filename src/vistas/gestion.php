@@ -75,7 +75,7 @@
                                         <v-list-item
                                             v-for="alumno, i in cpmAlumnos"
                                             :key="i"
-                                            :title="alumno.nombre_completo"
+                                            :title="alumno.nombre_completo + ' - ' + alumno.turno"
                                             class="style-item-list"
                                         >
                                             <template v-slot:append>
@@ -117,10 +117,21 @@
                                         <v-list-item
                                             v-for="documento in DOCsolicitud"
                                             :key="documento.id"
-                                            :title="'Constancia de termino del servicio social'"
+                                            :title="'Solicitud de practicas profesionales'"
                                             :subtitle="documento.nombre_documento"
                                         >
                                             <template v-slot:append>
+                                                <v-select
+                                                label="Estatus"
+                                                v-model="statusSolicitud"
+                                                variant="underlined"
+                                                style="margin-right: 15px;"
+                                                :items="estados"
+                                                item-title="estado"
+                                                :item-props="documento.estatus"
+                                                item-value="value"
+                                                >
+                                                </v-select>
                                                 <v-btn
                                                     icon="mdi-download-circle-outline"
                                                     variant="tonal"
@@ -133,10 +144,21 @@
                                         <v-list-item
                                             v-for="documento in DOCcarta_aceptacion"
                                             :key="documento.id"
-                                            :title="'Constancia de termino del servicio social'"
+                                            :title="'Carta de aceptación'"
                                             :subtitle="documento.nombre_documento"
                                         >
                                             <template v-slot:append>
+                                                <v-select
+                                                label="Estatus"
+                                                v-model="statusCartaAceptacion"
+                                                variant="underlined"
+                                                style="margin-right: 15px;"
+                                                :items="estados"
+                                                item-title="estado"
+                                                :item-props="documento.estatus"
+                                                item-value="value"
+                                                >
+                                                </v-select>
                                                 <v-btn
                                                     icon="mdi-download-circle-outline"
                                                     variant="tonal"
