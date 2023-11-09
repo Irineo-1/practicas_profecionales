@@ -155,6 +155,26 @@
         echo $nombre_def;
     }
 
+    if( $_POST["action"] == "guardar_institucion" )
+    {
+        $adNombreInstitucion = $_POST["adNombreInstitucion"];
+        $adNombreTitular = $_POST["adNombreTitular"];
+        $adPuestoTitular = $_POST["adPuestoTitular"];
+        $adRfc = $_POST["adRfc"];
+        $adDireccion = $_POST["adDireccion"];
+        $adTelefono = $_POST["adTelefono"];
+        $adCorreo = $_POST["adCorreo"];
+        $adNombreTestigo = $_POST["adNombreTestigo"];
+        $adPuestoTestigo = $_POST["adPuestoTestigo"];
+        $adEntidadFederativa = $_POST["adEntidadFederativa"];
+        $adClaveCentro = $_POST["adClaveCentro"];
+        $adTipoInstitucion = $_POST["adTipoInstitucion"];
+
+        Instituciones::addInstitucion($adNombreInstitucion, $adNombreTitular, $adPuestoTitular, $adRfc, $adDireccion, $adTelefono, $adCorreo, $adNombreTestigo, $adPuestoTestigo, $adEntidadFederativa, $adClaveCentro, $adTipoInstitucion);
+
+        echo 0;
+    }
+
     if( $_POST["action"] == "eliminar_documento" )
     {
         $route = $_SERVER['DOCUMENT_ROOT']."/practicas_profesionales/templatesDocumentos/";

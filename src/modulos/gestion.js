@@ -22,13 +22,19 @@ createApp({
         let idAlumnoSeleccionado = ref(0)
         let nuevaPassword = ref("")
         let textoAlerta = ref("")
+        let vistaAddInstitucion = ref("alumnos")
         let infoAccion = ref(false)
         let showAlerta = ref(false)
+        let showAlertAddIns = ref(false)
         let tipoAlerta = ref("")
         let statusSolicitud = ref(100)
         let statusCartaAceptacion = ref(100)
         let idDocumentoSolicitud = ref(100)
         let idDocumentoCartaAceptacion = ref(100)
+        let emailRules = ref([value => {
+          const pattern = /^(([^<>()[\]\\.,;:\s@"]+(\.[^<>()[\]\\.,;:\s@"]+)*)|(".+"))@((\[[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}])|(([a-zA-Z\-0-9]+\.)+[a-zA-Z]{2,}))$/
+          return pattern.test(value) || 'Invalid e-mail.'
+        }])
         let estados = ref([{
             "estado": "Aprovado",
             "value": 2
@@ -46,6 +52,19 @@ createApp({
             if( sinServicio.value ) return alumnos.value.filter(el => el.numero_proceso == 0)
             return alumnos.value.filter(el => el.nombre_completo.toLowerCase().includes(buscarAlumno.value.toLowerCase()))
         })
+
+        let adNombreInstitucion = ref("")
+        let adNombreTitular = ref("")
+        let adPuestoTitular = ref("")
+        let adRfc = ref("")
+        let adDireccion = ref("")
+        let adTelefono = ref("")
+        let adCorreo = ref("")
+        let adNombreTestigo = ref("")
+        let adPuestoTestigo = ref("")
+        let adEntidadFederativa = ref("")
+        let adClaveCentro = ref("")
+        let adTipoInstitucion = ref("")
 
         watch(statusSolicitud, (antVal, prevVal) => {
             if ( prevVal == 100 ) return
@@ -167,6 +186,46 @@ createApp({
             window.location.href = "gestionPlantillas.php"
         }
 
+        const guardarInstitucion = () =>
+        {
+            showAlertAddIns.value = false
+          const data = new FormData()
+          data.append("action", "guardar_institucion")
+          data.append("adNombreInstitucion", adNombreInstitucion.value)
+          data.append("adNombreTitular", adNombreTitular.value)
+          data.append("adPuestoTitular", adPuestoTitular.value)
+          data.append("adRfc", adRfc.value)
+          data.append("adDireccion", adDireccion.value)
+          data.append("adTelefono", adTelefono.value)
+          data.append("adCorreo", adCorreo.value)
+          data.append("adNombreTestigo", adNombreTestigo.value)
+          data.append("adPuestoTestigo", adPuestoTestigo.value)
+          data.append("adEntidadFederativa", adEntidadFederativa.value)
+          data.append("adClaveCentro", adClaveCentro.value)
+          data.append("adTipoInstitucion", adTipoInstitucion.value)
+    
+          fetch("../../controladores/stepSection.php",{
+              method: "POST",
+              body: data,
+          })
+          .then(res => res.text())
+          .then(() => {
+            showAlertAddIns.value = true
+            adNombreInstitucion.value = ""
+            adNombreTitular.value = ""
+            adPuestoTitular.value = ""
+            adRfc.value = ""
+            adDireccion.value = ""
+            adTelefono.value = ""
+            adCorreo.value = ""
+            adNombreTestigo.value = ""
+            adPuestoTestigo.value = ""
+            adEntidadFederativa.value = ""
+            adClaveCentro.value = ""
+            adTipoInstitucion.value = ""
+          })
+        }
+
         return {
             nombreMaestro,
             puesto,
@@ -191,12 +250,28 @@ createApp({
             statusSolicitud,
             estados,
             statusCartaAceptacion,
+            vistaAddInstitucion,
+            adTipoInstitucion,
+            adClaveCentro,
+            adEntidadFederativa,
+            adPuestoTestigo,
+            adNombreTestigo,
+            adCorreo,
+            adTelefono,
+            adDireccion,
+            adRfc,
+            adPuestoTitular,
+            adNombreTitular,
+            adNombreInstitucion,
+            emailRules,
+            showAlertAddIns,
             CerrarSesion,
             seeDocuments,
             downloadDocument,
             getAlumnoSelected,
             actualizarAlumno,
-            goToFiles
+            goToFiles,
+            guardarInstitucion
         }
     },
     async created()

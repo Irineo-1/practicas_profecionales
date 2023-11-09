@@ -41,6 +41,7 @@ createApp({
     let adEntidadFederativa = ref("")
     let adClaveCentro = ref("")
     let adTipoInstitucion = ref("")
+    
     let mensajeStatusDocumentos = ref("")
     let statusSolicitud = ref(0)
     let statusCartaAceptacion = ref(0)
@@ -143,9 +144,6 @@ createApp({
       let fechaFinWF = `${arrFechaFinDes[2]} de ${meses.value[parseInt(arrFechaFinDes[1])-1]} del ${arrFechaFinDes[0]}`
       let fechaInicioWF = `${arrFechaInicioDes[2]} de ${meses.value[parseInt(arrFechaInicioDes[1])-1]} del ${arrFechaInicioDes[0]}`
       let form = new FormData()
-
-      console.log("inicio", fechaInicioWF)
-      console.log("fin", fechaFinWF)
 
       form.append("action", "generar_carta_presentacion")
       form.append("hoy", formatoToday)

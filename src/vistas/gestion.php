@@ -17,6 +17,22 @@
 
                     <v-btn
                         color="white"
+                        @click="vistaAddInstitucion = 'addInstitucion', showAlertAddIns = false"
+                        v-if="vistaAddInstitucion == 'alumnos'"
+                    >
+                        Agregar instituciones
+                    </v-btn>
+                    
+                    <v-btn
+                        color="white"
+                        @click="vistaAddInstitucion = 'alumnos'"
+                        v-if="vistaAddInstitucion == 'addInstitucion'"
+                    >
+                        Alumnos
+                    </v-btn>
+
+                    <v-btn
+                        color="white"
                         @click="goToFiles"
                         icon="mdi-file-cloud"
                     >
@@ -48,7 +64,7 @@
                 <v-main>
                     <v-container fluid>
                         <v-row dense>
-                            <v-col>
+                            <v-col v-if="vistaAddInstitucion == 'alumnos'">
                                 <v-card class="mx-auto" :class="[`elevation-5`]" v-if="vista == 0">
                                     <div>
                                         <v-container>
@@ -272,6 +288,35 @@
                                     <div class="d-flex justify-center" style="margin-top: 10px; margin-bottom: 10px;">
                                         <v-btn icon="mdi-arrow-left" @click="vista = 0"></v-btn>
                                     </div>
+                                </v-card>
+                            </v-col>
+                            <v-col v-else>
+                                <v-card class="mx-auto" :class="[`elevation-5`]">
+                                    <v-card-text>
+                                        <v-alert v-show="showAlertAddIns" title="Institucion agregada con exito" closable type="success"></v-alert>
+                                        <v-text-field label="Nombre de la institución" variant="underlined" v-model="adNombreInstitucion"></v-text-field>
+                                        <v-text-field label="Nombre del titular" variant="underlined" v-model="adNombreTitular"></v-text-field>
+                                        <v-text-field label="Puesto del titular" variant="underlined" v-model="adPuestoTitular"></v-text-field>
+                                        <v-text-field label="RFC" variant="underlined" v-model="adRfc"></v-text-field>
+                                        <v-text-field label="Dirección" variant="underlined" v-model="adDireccion"></v-text-field>
+                                        <v-text-field label="Telefono" type="number" variant="underlined" v-model="adTelefono"></v-text-field>
+                                        <v-text-field label="Correo" :rules="emailRules" variant="underlined" v-model="adCorreo"></v-text-field>
+                                        <v-text-field label="Nombre del testigo" variant="underlined" v-model="adNombreTestigo"></v-text-field>
+                                        <v-text-field label="Puesto del testigo" variant="underlined" v-model="adPuestoTestigo"></v-text-field>
+                                        <v-text-field label="Entidad federativa" variant="underlined" v-model="adEntidadFederativa"></v-text-field>
+                                        <v-text-field label="Clave del centro" variant="underlined" v-model="adClaveCentro"></v-text-field>
+                                        <v-text-field label="Tipo de institucion" variant="underlined" v-model="adTipoInstitucion"></v-text-field>
+                                    </v-card-text>
+                                    <v-card-actions>
+                                        <v-spacer></v-spacer>
+                                        <v-btn
+                                            color="#6a1c37"
+                                            variant="flat"
+                                            @click="guardarInstitucion"
+                                        >
+                                            Agregar
+                                        </v-btn>
+                                    </v-card-actions>
                                 </v-card>
                             </v-col>
                         </v-row>

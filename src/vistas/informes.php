@@ -49,7 +49,7 @@
                     <v-row dense>
                         <v-col>
                             <v-card class="mx-auto" :class="[`elevation-5`]">
-                                <v-card-text>
+                                <v-card-text v-if="vista == 'informes'">
                                     <span style="font-weight: 600; font-size: 1.1rem;">Aqui pudes descargar el informe vacio para su llenado.</span>
                                     <br>
                                     <br>
@@ -59,6 +59,9 @@
                                     >
                                         Descargar informe
                                     </v-btn>
+                                    <br>
+                                    <br>
+                                    <v-divider></v-divider>
                                     <br>
                                     <br>
                                     <span style="font-weight: 600; font-size: 1.1rem;">Subir el informe llenado.</span>
@@ -82,6 +85,9 @@
                                     >
                                         Subir
                                     </v-btn>
+                                    <br>
+                                    <br>
+                                    <v-divider v-if="informes.length > 0"></v-divider>
                                     <br>
                                     <br>
                                     <v-expansion-panels
@@ -111,6 +117,48 @@
                                             </v-expansion-panel-text>
                                         </v-expansion-panel>
                                     </v-expansion-panels>
+                                    <v-divider></v-divider>
+                                    <br>
+                                    <br>
+                                    <div v-if="cartaLiberacionExist.length < 1">
+                                        <span style="font-weight: 600; font-size: 1.1rem;">Una vez terminado los informes aquí puedes subir la carta de liberación</span>
+                                        <br>
+                                        <br>
+                                        <v-btn
+                                            append-icon="mdi-upload"
+                                            @click="vista = 'cartaLiberacion', archivo = []"
+                                        >
+                                            Subir carta de liberación
+                                        </v-btn>
+                                    </div>
+                                </v-card-text>
+                                <v-card-text v-if="vista == 'cartaLiberacion'">
+                                    <v-alert v-show="showAlertCarta" title="Archivo subido con exito" closable type="success"></v-alert>
+                                    <span style="font-weight: 600; font-size: 1.1rem;">Subir Carta de liberación</span>
+                                    <br>
+                                    <span class="text-caption text-grey">Solo PDF</span>
+                                    <br>
+                                    <br>
+                                    <v-file-input
+                                        show-size
+                                        counter
+                                        density="compact"
+                                        accept=".pdf"
+                                        v-model="archivo"
+                                        label="Click aqui para subir el documento"
+                                    ></v-file-input>
+                                    <v-btn
+                                        color="green"
+                                        variant="flat"
+                                        @click="subirArchivo(`carta_liberacion`)"
+                                        :disabled="( archivo.length < 1 ) ? true : false"
+                                    >
+                                        Subir
+                                    </v-btn>
+
+                                    <div class="d-flex justify-center" style="margin-top: 10px; margin-bottom: 10px;">
+                                        <v-btn icon="mdi-arrow-left" @click="vista = 'informes'"></v-btn>
+                                    </div>
                                 </v-card-text>
                             </v-card>
                         </v-col>

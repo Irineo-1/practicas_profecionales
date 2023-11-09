@@ -1,13 +1,17 @@
-import { createApp, ref, computed, vuetify } from '../componentes/initVue.js'
+import { createApp, ref, computed, vuetify, watch } from '../componentes/initVue.js'
 import { getUser } from '../componentes/user.js'
 
 createApp({
     setup()
     {
         let userName = ref('')
+        let vista = ref('informes')
         let archivo = ref([])
+        let cartaLiberacion = ref([])
         let informes = ref([])
         let panel = ref([])
+        let showAlertCarta = ref(false)
+        let cartaLiberacionExist = ref([])
 
         const CerrarSesion = () =>
         {
@@ -36,8 +40,31 @@ createApp({
           })
           .then(res => res.text())
           .then(() => {
+            if( proceso == "carta_liberacion" )
+            {
+                cartaLiberacionExist.value = ["to put out"]
+                showAlertCarta.value = true
+            }
             archivo.value = []
             getInformes()
+          })
+        }
+
+        const getStatusDocumento = ( proceso ) =>
+        {
+          return new Promise((resolve) => {
+            let form = new FormData()
+            form.append("action", "get_status_document")
+            form.append("process", proceso)
+      
+            fetch("../../controladores/stepSection.php", {
+              method: "POST",
+              body: form,
+            })
+            .then(res => res.text())
+            .then(data => {
+              resolve(JSON.parse(data))
+            })
           })
         }
 
@@ -100,11 +127,16 @@ createApp({
             archivo,
             informes,
             panel,
+            vista,
+            cartaLiberacion,
+            showAlertCarta,
+            cartaLiberacionExist,
             CerrarSesion,
             descargarPInforme,
             subirArchivo,
             getInformes,
             downloadDocument,
+            getStatusDocumento,
             goToDocumentos
         }
     },
@@ -114,5 +146,7 @@ createApp({
         this.userName = user[0].nombre_completo
 
         this.getInformes()
+
+        this.cartaLiberacionExist = await this.getStatusDocumento("carta_liberacion")
     }
 }).use(vuetify).mount("#informes")
