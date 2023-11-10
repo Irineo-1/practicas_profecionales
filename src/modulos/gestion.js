@@ -31,6 +31,7 @@ createApp({
         let statusCartaAceptacion = ref(100)
         let idDocumentoSolicitud = ref(100)
         let idDocumentoCartaAceptacion = ref(100)
+        let DOCcarta_liberacion = ref([])
         let emailRules = ref([value => {
           const pattern = /^(([^<>()[\]\\.,;:\s@"]+(\.[^<>()[\]\\.,;:\s@"]+)*)|(".+"))@((\[[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}])|(([a-zA-Z\-0-9]+\.)+[a-zA-Z]{2,}))$/
           return pattern.test(value) || 'Invalid e-mail.'
@@ -112,6 +113,7 @@ createApp({
             DOCconstancia_temino_servicio.value = TotalFiles.filter(el => el.proceso == "constancia_termino") || []
             DOCsolicitud.value = TotalFiles.filter(el => el.proceso == "solicitud") || []
             DOCcarta_aceptacion.value = TotalFiles.filter(el => el.proceso == "carta_aceptacion") || []
+            DOCcarta_liberacion.value = TotalFiles.filter(el => el.proceso == "carta_liberacion") || []
             DOCfirmado.value = TotalFiles.filter(el => el.proceso.includes('firmado')) || []
 
             if(DOCsolicitud.value.length > 0)
@@ -265,6 +267,7 @@ createApp({
             adNombreInstitucion,
             emailRules,
             showAlertAddIns,
+            DOCcarta_liberacion,
             CerrarSesion,
             seeDocuments,
             downloadDocument,

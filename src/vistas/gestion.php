@@ -183,6 +183,22 @@
                                             </template>
                                         </v-list-item>
                                     </v-list>
+                                    <v-list lines="one">
+                                        <v-list-item
+                                            v-for="documento in DOCcarta_liberacion"
+                                            :key="documento.id"
+                                            :title="'Carta de liberación'"
+                                            :subtitle="documento.nombre_documento"
+                                        >
+                                            <template v-slot:append>
+                                                <v-btn
+                                                    icon="mdi-download-circle-outline"
+                                                    variant="tonal"
+                                                    @click="downloadDocument(documento.nombre_documento, documento.proceso)"
+                                                ></v-btn>
+                                            </template>
+                                        </v-list-item>
+                                    </v-list>
 
                                     <v-expansion-panels
                                     v-model="panel"
