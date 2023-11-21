@@ -118,7 +118,7 @@ createApp({
             const url = window.URL.createObjectURL(new Blob([data]))
             const link = document.createElement('a')
             link.href = url
-            link.setAttribute('download', `PPSolicitudPracticasProfecionales.doc`);
+            link.setAttribute('download', `PPSolicitudPracticasProfecionales.docx`);
             document.body.appendChild(link)
             link.click()
 
@@ -163,7 +163,7 @@ createApp({
             const url = window.URL.createObjectURL(new Blob([data]))
             const link = document.createElement('a')
             link.href = url
-            link.setAttribute('download', `CPCartaDePresentacion.doc`);
+            link.setAttribute('download', `CPCartaDePresentacion.docx`);
             document.body.appendChild(link)
             link.click()
 
@@ -207,7 +207,7 @@ createApp({
             const url = window.URL.createObjectURL(new Blob([data]))
             const link = document.createElement('a')
             link.href = url
-            link.setAttribute('download', `Convenio.doc`);
+            link.setAttribute('download', `Convenio.docx`);
             document.body.appendChild(link)
             link.click()
 

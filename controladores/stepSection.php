@@ -5,6 +5,9 @@
     require_once(dirname(dirname(__FILE__))."/modelos/documentos.php");
     require_once(dirname(dirname(__FILE__))."/modelos/alumno.php");
     require_once(dirname(dirname(__FILE__))."/modelos/instituciones.php");
+    require_once(dirname(dirname(__FILE__))."/vendor/autoload.php");
+
+    use PhpOffice\PhpWord\TemplateProcessor;
 
     if( $_POST["action"] == "subir_archivo" )
     {
@@ -78,22 +81,24 @@
         $id = $_POST["id"];
         $step = $_POST["step"];
 
+        $ruta_file = dirname(__DIR__) . '/templatesDocumentos/solicitud_practicas.docx';
+        
+        $template = new TemplateProcessor($ruta_file);
+        
         Alumno::updateStep( $step );
         Alumno::updateInstitucion( $id );
         $res = Instituciones::getInstitucion( $id );
-
-        $plantilla = file_get_contents(dirname(dirname(__FILE__)) . "/templatesDocumentos/pps.rtf");
-        $plantilla = str_replace('#NOMBREINSTITUCION#', $res[0]["nombre_empresa"], $plantilla);
-        $plantilla = str_replace('#DOMICILIO#', $res[0]["direccion"], $plantilla);
-        $plantilla = str_replace('#TELEFONO#', $res[0]["telefono"], $plantilla);
-        $plantilla = str_replace('#TITULARDELADEPENDENCIA#', $res[0]["nombre_titular"], $plantilla);
-        $plantilla = str_replace('#CARGO#', $res[0]["puesto_titular"], $plantilla);
-        $plantilla = str_replace('#NOMBREDELASESOR#', $res[0]["nombre_testigo"], $plantilla);
         
-        $nombre_def = $_SESSION["NControl"].".doc";
-        $route = $_SERVER['DOCUMENT_ROOT']."/practicas_profesionales/templatesDocumentos/";
+        $template->setValue('NOMBREINSTITUCION', $res[0]["nombre_empresa"]);
+        $template->setValue('DOMICILIO', $res[0]["direccion"]);
+        $template->setValue('TELEFONO', $res[0]["telefono"]);
+        $template->setValue('TITULARDELADEPENDENCIA', $res[0]["nombre_titular"]);
+        $template->setValue('CARGO', $res[0]["puesto_titular"]);
+        $template->setValue('NOMBREDELASESOR', $res[0]["nombre_testigo"]);
+        
+        $nombre_def = $_SESSION["NControl"] . '.docx';
 
-        file_put_contents( $route . $nombre_def, $plantilla);
+        $template->saveAs(dirname(__DIR__) . '/templatesDocumentos/' . $nombre_def);
 
         echo $nombre_def;
     }
@@ -103,21 +108,22 @@
         $resAlumno = Alumno::getAlumno();
         $res = Instituciones::getInstitucion($resAlumno[0]["institucion"]);
 
-        $plantilla = file_get_contents(dirname(dirname(__FILE__)) . "/templatesDocumentos/cp.rtf");
-        $plantilla = str_replace('#FECHAACTUAL#', $_POST["hoy"], $plantilla);
-        $plantilla = str_replace('#TITULARDELADEPENDENCIA#', $res[0]["nombre_titular"], $plantilla);
-        $plantilla = str_replace('#CARGO#', $res[0]["puesto_titular"], $plantilla);
-        $plantilla = str_replace('#NOMBREALUMNO#', $_POST["nombreAlumno"], $plantilla);
-        $plantilla = str_replace('#ESPECIALIDAD#', $resAlumno[0]["especialidad"], $plantilla);
-        $plantilla = str_replace('#NUMEROCONTROL#', $_SESSION["NControl"], $plantilla);
-        $plantilla = str_replace('#FECHAINICIO#', $_POST["inicio"], $plantilla);
-        $plantilla = str_replace('#AFECHAFIN#', $_POST["fin"], $plantilla);
-        $plantilla = str_replace('#NOMBREDIRECTOR#', $_POST["director"], $plantilla);
-        
-        $nombre_def = $_SESSION["NControl"].".doc";
-        $route = $_SERVER['DOCUMENT_ROOT']."/practicas_profesionales/templatesDocumentos/";
+        $ruta_file = dirname(__DIR__) . '/templatesDocumentos/carta_presentacion.docx';
+        $template = new TemplateProcessor($ruta_file);
 
-        file_put_contents( $route . $nombre_def, $plantilla);
+        $template->setValue('FECHAACTUAL', $_POST["hoy"]);
+        $template->setValue('TITULARDELADEPENDENCIA', $res[0]["nombre_titular"]);
+        $template->setValue('CARGO', $res[0]["puesto_titular"]);
+        $template->setValue('NOMBREALUMNO', $_POST["nombreAlumno"]);
+        $template->setValue('ESPECIALIDAD', $resAlumno[0]["especialidad"]);
+        $template->setValue('NUMEROCONTROL', $_SESSION["NControl"]);
+        $template->setValue('FECHAINICIO', $_POST["inicio"]);
+        $template->setValue('FECHATERMINO', $_POST["fin"]);
+        $template->setValue('NOMBREDIRECTOR', $_POST["director"]);
+        
+        $nombre_def = $_SESSION["NControl"] . '.docx';
+
+        $template->saveAs(dirname(__DIR__) . '/templatesDocumentos/' . $nombre_def);
 
         echo $nombre_def;
     }
@@ -138,19 +144,20 @@
         $adTipoInstitucion = $_POST["adTipoInstitucion"];
 
         Instituciones::addInstitucion($adNombreInstitucion, $adNombreTitular, $adPuestoTitular, $adRfc, $adDireccion, $adTelefono, $adCorreo, $adNombreTestigo, $adPuestoTestigo, $adEntidadFederativa, $adClaveCentro, $adTipoInstitucion);
-
-        $plantilla = file_get_contents(dirname(dirname(__FILE__)) . "/templatesDocumentos/cpa.rtf");
-        $plantilla = str_replace('#NOMBREEMPRESA#', $adNombreInstitucion, $plantilla);
-        $plantilla = str_replace('#TITULARDELADEPENDENCIA#', $adNombreTitular, $plantilla);
-        $plantilla = str_replace('#RFC#', $adRfc, $plantilla);
-        $plantilla = str_replace('#DOMICILIO#', $adDireccion, $plantilla);
-        $plantilla = str_replace('#TELEFONO#', $adTelefono, $plantilla);
-        $plantilla = str_replace('##correo##', $adCorreo, $plantilla);
         
-        $nombre_def = $_SESSION["NControl"].".doc";
-        $route = $_SERVER['DOCUMENT_ROOT']."/practicas_profesionales/templatesDocumentos/";
+        $ruta_file = dirname(__DIR__) . '/templatesDocumentos/convenio.docx';
+        $template = new TemplateProcessor($ruta_file);
 
-        file_put_contents( $route . $nombre_def, $plantilla);
+        $template->setValue('NOMBREEMPRESA', $adNombreInstitucion);
+        $template->setValue('TITULARDELADEPENDENCIA', $adNombreTitular);
+        $template->setValue('RFC', $adRfc);
+        $template->setValue('DOMICILIO', $adDireccion);
+        $template->setValue('TELEFONO', $adTelefono);
+        $template->setValue('CORREO', $adCorreo);
+        
+        $nombre_def = $_SESSION["NControl"] . '.docx';
+
+        $template->saveAs(dirname(__DIR__) . '/templatesDocumentos/' . $nombre_def);
 
         echo $nombre_def;
     }
