@@ -122,13 +122,13 @@ createApp({
             document.body.appendChild(link)
             link.click()
 
-            // let form = new FormData()
-            // form.append("action", "eliminar_documento")
-            // form.append("archivo", nameDocument)
-            // fetch(`controladores/stepSection.php`,{
-            //   method: "POST",
-            //   body: form,
-            // })
+            let form = new FormData()
+            form.append("action", "eliminar_documento")
+            form.append("archivo", nameDocument)
+            fetch(`controladores/stepSection.php`,{
+              method: "POST",
+              body: form,
+            })
             statusSolicitud.value = 3
             step.value ++
         })
