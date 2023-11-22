@@ -320,7 +320,7 @@
                                         <v-text-field label="Nombre del testigo" variant="underlined" v-model="adNombreTestigo"></v-text-field>
                                         <v-text-field label="Puesto del testigo" variant="underlined" v-model="adPuestoTestigo"></v-text-field>
                                         <v-text-field label="Entidad federativa" variant="underlined" v-model="adEntidadFederativa"></v-text-field>
-                                        <v-text-field label="Clave del centro" variant="underlined" v-model="adClaveCentro"></v-text-field>
+                                        <v-text-field label="Clave" variant="underlined" v-model="adClaveCentro"></v-text-field>
                                         <v-text-field label="Tipo de institucion" variant="underlined" v-model="adTipoInstitucion"></v-text-field>
                                     </v-card-text>
                                     <v-card-actions>

@@ -61,7 +61,7 @@
                                         <v-list-item
                                             v-for="documento in DOCconstancia_temino_servicio"
                                             :key="documento.id"
-                                            :title="'Constancia de termino del servicio social'"
+                                            :title="'Constancia de término del servicio social'"
                                             :subtitle="documento.nombre_documento"
                                         >
                                             <template v-slot:append>
@@ -77,7 +77,7 @@
                                         <v-list-item
                                             v-for="documento in DOCsolicitud"
                                             :key="documento.id"
-                                            :title="'Constancia de termino del servicio social'"
+                                            :title="'Constancia de término del servicio social'"
                                             :subtitle="documento.nombre_documento"
                                         >
                                             <template v-slot:append>
@@ -93,7 +93,7 @@
                                         <v-list-item
                                             v-for="documento in DOCcarta_aceptacion"
                                             :key="documento.id"
-                                            :title="'Constancia de termino del servicio social'"
+                                            :title="'Constancia de término del servicio social'"
                                             :subtitle="documento.nombre_documento"
                                         >
                                             <template v-slot:append>

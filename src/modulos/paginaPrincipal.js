@@ -97,7 +97,7 @@ createApp({
         nombreDocumentoCartaAceptacion.value = statusCAD[0].nombre_documento
 
         statusSD = []
-        mensajeStatusDocumentos.value = "Para poder continuar una persona ahotorizada tendra que revisar el documento proporcionado"
+        mensajeStatusDocumentos.value = "Para poder continuar una persona izada  tendra que revisar el documento proporcionado"
       })
     }
  
@@ -122,13 +122,13 @@ createApp({
             document.body.appendChild(link)
             link.click()
 
-            let form = new FormData()
-            form.append("action", "eliminar_documento")
-            form.append("archivo", nameDocument)
-            fetch(`controladores/stepSection.php`,{
-              method: "POST",
-              body: form,
-            })
+            // let form = new FormData()
+            // form.append("action", "eliminar_documento")
+            // form.append("archivo", nameDocument)
+            // fetch(`controladores/stepSection.php`,{
+            //   method: "POST",
+            //   body: form,
+            // })
             statusSolicitud.value = 3
             step.value ++
         })
@@ -344,7 +344,7 @@ createApp({
   },
   async beforeCreate()
   {
-    let smsInfo = "Para poder continuar una persona ahotorizada tendrá que revisar el documento proporcionado, puedes acercarte a una persona ahotorizada para que revise tu documento."
+    let smsInfo = "Para poder continuar una persona autorizada tendrá que revisar el documento proporcionado, puedes acercarte a una persona autorizada para que revise tu documento."
     let smsRechasado = "Lo sentimos, el documento fue rechazado porque no cumple con las características requeridas."
     let smsAceptado = "Tu documento fue aceptado."
 

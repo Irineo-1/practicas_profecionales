@@ -37,7 +37,7 @@ createApp({
           return pattern.test(value) || 'Invalid e-mail.'
         }])
         let estados = ref([{
-            "estado": "Aprovado",
+            "estado": "Aprobado",
             "value": 2
         },
         {
@@ -45,7 +45,7 @@ createApp({
             "value": 1
         },
         {
-            "estado": "Rechasado",
+            "estado": "Rechazado",
             "value": 0
         }])
 
