@@ -182,6 +182,7 @@ createApp({
     {
       const data = new FormData()
       data.append("action", "generar_convenio")
+      data.append("director", directorAcargo.value)
       data.append("adNombreInstitucion", adNombreInstitucion.value)
       data.append("adNombreTitular", adNombreTitular.value)
       data.append("adPuestoTitular", adPuestoTitular.value)

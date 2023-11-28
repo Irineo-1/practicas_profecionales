@@ -130,6 +130,7 @@
 
     if( $_POST["action"] == "generar_convenio" )
     {
+        $director = $_POST["director"];
         $adNombreInstitucion = $_POST["adNombreInstitucion"];
         $adNombreTitular = $_POST["adNombreTitular"];
         $adPuestoTitular = $_POST["adPuestoTitular"];
@@ -148,6 +149,7 @@
         $ruta_file = dirname(__DIR__) . '/templatesDocumentos/convenio.docx';
         $template = new TemplateProcessor($ruta_file);
 
+        $template->setValue('DIRECTOR', $director);
         $template->setValue('NOMBREEMPRESA', $adNombreInstitucion);
         $template->setValue('TITULARDELADEPENDENCIA', $adNombreTitular);
         $template->setValue('RFC', $adRfc);

@@ -410,6 +410,14 @@
                     </v-card-title>
 
                     <v-card-text>
+                        <v-select
+                        label="Selecciona un director"
+                        v-model="directorAcargo"
+                        :items="directores"
+                        item-title="nombre"
+                        item-value="nombre"
+                        variant="underlined"
+                        ></v-select>
                         <v-text-field label="Nombre de la institución" variant="underlined" v-model="adNombreInstitucion"></v-text-field>
                         <v-text-field label="Nombre del titular" variant="underlined" v-model="adNombreTitular"></v-text-field>
                         <v-text-field label="Puesto del titular" variant="underlined" v-model="adPuestoTitular"></v-text-field>
@@ -420,7 +428,7 @@
                         <v-text-field label="Nombre del testigo" variant="underlined" v-model="adNombreTestigo"></v-text-field>
                         <v-text-field label="Puesto del testigo" variant="underlined" v-model="adPuestoTestigo"></v-text-field>
                         <v-text-field label="Entidad federativa" variant="underlined" v-model="adEntidadFederativa"></v-text-field>
-                        <v-text-field label="Clave " variant="underlined" v-model="adClaveCentro"></v-text-field>
+                        <v-text-field label="Clave" variant="underlined" v-model="adClaveCentro"></v-text-field>
                         <v-text-field label="Tipo de institucion" variant="underlined" v-model="adTipoInstitucion"></v-text-field>
                     </v-card-text>
                     
