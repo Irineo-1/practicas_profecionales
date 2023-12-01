@@ -79,8 +79,13 @@
                                                     >
                                                     </v-text-field>
                                                 </v-col>
-                                                <v-col cols="12" xs="1" sm="6" class="d-flex justify-end">
+                                                <v-col cols="12" xs="1" sm="3" class="d-flex justify-end">
                                                     <v-switch label="Sin servicio" color="#6a1c37" inset v-model="sinServicio"></v-switch>
+                                                </v-col>
+                                                <v-col cols="12" xs="1" sm="3" class="d-flex justify-end">
+                                                    <v-btn prepend-icon="mdi-file-cloud" @click="generarReporteMDL = true">
+                                                        Reporte
+                                                    </v-btn>
                                                 </v-col>
                                             </v-row>
                                         </v-container>
@@ -336,7 +341,65 @@
                                 </v-card>
                             </v-col>
                         </v-row>
+                        <v-dialog
+                        v-model="generarReporteMDL"
+                        width="500px"
+                        >
+                            <v-card>
+                                <v-card-title class="text-h5">
+                                    Generar reporte
+                                </v-card-title>
+
+                                <v-card-text>
+                                    <v-select
+                                    label="Selecciona un turno"
+                                    v-model="turnoSelecReport"
+                                    :items="turnos"
+                                    variant="underlined"
+                                    ></v-select>
+                                    <v-select
+                                    label="Selecciona una condicion"
+                                    v-model="condicionReporte"
+                                    :items="['Aun no han realizado el servicio social', 'Aun no se ha seleccionado una institucion', 'Ya realiza las practicas', 'Se culmino con las practicas']"
+                                    variant="underlined"
+                                    ></v-select>
+                                </v-card-text>
+                                
+                                <v-card-actions>
+                                    <v-spacer></v-spacer>
+                                    <v-btn variant="text" @click="generarReporteMDL = false">
+                                        Cancelar
+                                    </v-btn>
+                                    <v-btn
+                                        color="green-darken-1"
+                                        variant="text"
+                                        @click="generarReporteAlumnos"
+                                        v-if="condicionReporte.trim() != '' || turnoSelecReport.trim() != ''"
+                                    >
+                                        Generar
+                                    </v-btn>
+                                </v-card-actions>
+                            </v-card>
+                        </v-dialog>
                     </v-container>
+                    <v-snackbar
+                    color="#6a1c37"
+                    rounded="pill"
+                    v-model="smsError"
+                    >
+                    {{texto_error}}
+
+                    <template v-slot:actions>
+                        <v-btn
+                        color="white"
+                        variant="text"
+                        @click="smsError = false"
+                        
+                        >
+                        cerrar
+                        </v-btn>
+                    </template>
+                    </v-snackbar>
                 </v-main>
             </v-layout>
         </v-card>

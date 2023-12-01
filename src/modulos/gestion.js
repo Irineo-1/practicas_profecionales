@@ -22,16 +22,22 @@ createApp({
         let idAlumnoSeleccionado = ref(0)
         let nuevaPassword = ref("")
         let textoAlerta = ref("")
+        let turnoSelecReport = ref("")
+        let condicionReporte = ref("")
+        let texto_error = ref("")
         let vistaAddInstitucion = ref("alumnos")
         let infoAccion = ref(false)
         let showAlerta = ref(false)
         let showAlertAddIns = ref(false)
+        let generarReporteMDL = ref(false)
+        let smsError = ref(false)
         let tipoAlerta = ref("")
         let statusSolicitud = ref(100)
         let statusCartaAceptacion = ref(100)
         let idDocumentoSolicitud = ref(100)
         let idDocumentoCartaAceptacion = ref(100)
         let DOCcarta_liberacion = ref([])
+        let turnos = ref(["Verspertino", "Matutino"])
         let emailRules = ref([value => {
           const pattern = /^(([^<>()[\]\\.,;:\s@"]+(\.[^<>()[\]\\.,;:\s@"]+)*)|(".+"))@((\[[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}])|(([a-zA-Z\-0-9]+\.)+[a-zA-Z]{2,}))$/
           return pattern.test(value) || 'Invalid e-mail.'
@@ -228,6 +234,48 @@ createApp({
           })
         }
 
+        const generarReporteAlumnos = () =>
+        {
+            let form = new FormData()
+            form.append("action", "generar_reporte_alumnos")
+            form.append("turno", turnoSelecReport.value)
+            form.append("condicion", condicionReporte.value)
+
+            fetch("../../controladores/informacionUser.php", {
+                method: "POST",
+                body: form
+            })
+            .then(res => res.text())
+            .then(nameDocument => {
+                if( nameDocument == 1 )
+                {
+                    smsError.value = true
+                    texto_error.value = "No hay registros para esta consulta"
+                }
+                else
+                {
+                    fetch(`../../templatesDocumentos/${nameDocument}`)
+                    .then(res => res.blob())
+                    .then(async (data) => {
+                        const url = window.URL.createObjectURL(new Blob([data]))
+                        const link = document.createElement('a')
+                        link.href = url
+                        link.setAttribute('download', nameDocument);
+                        document.body.appendChild(link)
+                        link.click()
+            
+                        let form = new FormData()
+                        form.append("action", "eliminar_documento")
+                        form.append("archivo", nameDocument)
+                        fetch(`../../controladores/stepSection.php`,{
+                          method: "POST",
+                          body: form,
+                        })
+                    })
+                }
+            })
+        }
+
         return {
             nombreMaestro,
             puesto,
@@ -268,13 +316,20 @@ createApp({
             emailRules,
             showAlertAddIns,
             DOCcarta_liberacion,
+            generarReporteMDL,
+            turnoSelecReport,
+            condicionReporte,
+            turnos,
+            smsError,
+            texto_error,
             CerrarSesion,
             seeDocuments,
             downloadDocument,
             getAlumnoSelected,
             actualizarAlumno,
             goToFiles,
-            guardarInstitucion
+            guardarInstitucion,
+            generarReporteAlumnos
         }
     },
     async created()

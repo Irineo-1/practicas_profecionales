@@ -60,9 +60,9 @@
                                         <span
                                             style="font-weight: 600; font-size: 1.1rem;"
                                         >
-                                            Para poder ser editatos por el sistema se usan expreciones diferentes dentro del documento. Ejemplo: #NOMBREINSTITUCION#.
-                                            Favor de visualizar el documento y cambiar los apartados correspondientes antes de reemplasarlo para que el sistema funcione correctamente.
-                                            El archivo tendra que tener la extención rtf.
+                                            Para poder ser editados por el sistema se usan expresiones diferentes dentro del documento. Ejemplo: #NOMBREINSTITUCION#.
+                                            Favor de visualizar el documento y cambiar los apartados correspondientes antes de reemplazarlo para que el sistema funcione correctamente.
+                                            El archivo tendrá que tener la extensión docx.
                                         </span>
                                         <br>
                                         <br>
@@ -79,13 +79,13 @@
                                                     <v-btn
                                                         icon="mdi-cloud-upload"
                                                         variant="tonal"
-                                                        @click="uploadFile = true, fileToReplace = 'pps.rtf'"
+                                                        @click="uploadFile = true, fileToReplace = 'solicitud_practicas.docx'"
                                                         style="margin-right: 5px;"
                                                     ></v-btn>
                                                     <v-btn
                                                         icon="mdi-download-circle-outline"
                                                         variant="tonal"
-                                                        @click="downloadDocument('pps.rtf')"
+                                                        @click="downloadDocument('solicitud_practicas.docx')"
                                                     ></v-btn>
                                                 </template>
                                             </v-list-item>
@@ -95,13 +95,13 @@
                                                     <v-btn
                                                         icon="mdi-cloud-upload"
                                                         variant="tonal"
-                                                        @click="uploadFile = true, fileToReplace = 'cp.rtf'"
+                                                        @click="uploadFile = true, fileToReplace = 'carta_presentacion.docx'"
                                                         style="margin-right: 5px;"
                                                     ></v-btn>
                                                     <v-btn
                                                         icon="mdi-download-circle-outline"
                                                         variant="tonal"
-                                                        @click="downloadDocument('cp.rtf')"
+                                                        @click="downloadDocument('carta_presentacion.docx')"
                                                     ></v-btn>
                                                 </template>
                                             </v-list-item>
@@ -127,13 +127,13 @@
                                                     <v-btn
                                                         icon="mdi-cloud-upload"
                                                         variant="tonal"
-                                                        @click="uploadFile = true, fileToReplace = 'cpa.rtf'"
+                                                        @click="uploadFile = true, fileToReplace = 'convenio.docx'"
                                                         style="margin-right: 5px;"
                                                     ></v-btn>
                                                     <v-btn
                                                         icon="mdi-download-circle-outline"
                                                         variant="tonal"
-                                                        @click="downloadDocument('cpa.rtf')"
+                                                        @click="downloadDocument('convenio.docx')"
                                                     ></v-btn>
                                                 </template>
                                             </v-list-item>
@@ -158,7 +158,7 @@
                                                     show-size
                                                     counter
                                                     density="compact"
-                                                    accept=".rtf"
+                                                    accept=".docx"
                                                     v-model="archivo"
                                                     label="Click aqui para subir el documento"
                                                 ></v-file-input>

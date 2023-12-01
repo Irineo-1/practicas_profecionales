@@ -135,6 +135,45 @@ class Alumno
 
         return $data;
     }
+
+    public static function filtrarAlumnos( $turno, $condicion )
+    {
+        $cnn = DBConecction::getConnection();
+
+        $sql = "SELECT al.numero_control, al.nombre_completo, al.especialidad, ies.nombre_empresa FROM ".self::$Tabla." al INNER JOIN instituciones ies ON al.institucion = ies.id WHERE turno = '$turno' AND numero_proceso $condicion";
+
+        $res = $cnn->query($sql);
+
+        $data = [];
+
+        while( $row = $res->fetch_assoc() )
+        {
+            array_push($data, $row);
+        }
+
+        return $data;
+    }
+
+    public static function getAlumnosCartaLiberacion()
+    {
+        $cnn = DBConecction::getConnection();
+        
+        $sql = "SELECT dc.numero_control, al.nombre_completo, al.especialidad, ies.nombre_empresa FROM ".self::$Tabla." al 
+        INNER JOIN documentos dc on dc.numero_control = al.numero_control 
+        INNER JOIN instituciones ies ON al.institucion = ies.id
+        WHERE proceso = 'carta_liberacion'";
+
+        $res = $cnn->query($sql);
+
+        $data = [];
+
+        while( $row = $res->fetch_assoc() )
+        {
+            array_push($data, $row);
+        }
+
+        return $data;
+    }
 }
 
 

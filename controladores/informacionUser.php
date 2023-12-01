@@ -5,6 +5,10 @@
     require_once(dirname(dirname(__FILE__))."/modelos/alumno.php");
     require_once(dirname(dirname(__FILE__))."/modelos/maestro.php");
     require_once(dirname(dirname(__FILE__))."/modelos/documentos.php");
+    require_once(dirname(dirname(__FILE__))."/vendor/autoload.php");
+
+    use PhpOffice\PhpSpreadsheet\IOFactory;
+    use PhpOffice\PhpSpreadsheet\Spreadsheet;
 
     if( $_POST["action"] == "get_user" )
     {
@@ -66,6 +70,66 @@
         }
         $res = Documentos::getDocumentos( $nControl );
         echo json_encode($res);
+    }
+
+    if( $_POST["action"] == "generar_reporte_alumnos" )
+    {
+        $turno = $_POST["turno"];
+        $condicion = $_POST["condicion"];
+        
+        $res = [];
+
+        $ruta = dirname(__DIR__) . '/templatesDocumentos/';
+
+        $noDataFound = true;
+
+        if( $condicion == "Aun no han realizado el servicio social" )
+        {
+            $res = Alumno::filtrarAlumnos( $turno, "< 2" );
+        }
+        else if( $condicion == "Aun no se ha seleccionado una institucion" )
+        {
+            $res = Alumno::filtrarAlumnos( $turno, "= 3" );
+        }
+        else if( $condicion == "Ya realiza las practicas" )
+        {
+            $res = Alumno::filtrarAlumnos( $turno, ">= 4" );
+        }
+        else if( $condicion == "Se culmino con las practicas" )
+        {
+            $res = Alumno::getAlumnosCartaLiberacion();
+        }
+
+        if(count($res) > 0)
+        {
+            $reader = IOFactory::createReader('Xlsx');
+            $spreadsheet = $reader->load($ruta . 'plantilla_reporte.xlsx');
+    
+            $flag = 2;
+    
+            foreach($res as $value)
+            {
+                $sheet = $spreadsheet->getActiveSheet();
+                $sheet->setCellValue('A' . $flag, $value['numero_control']);
+                $sheet->setCellValue('B' . $flag, $value['nombre_completo']);
+                $sheet->setCellValue('C' . $flag, $value['especialidad']);
+                $sheet->setCellValue('D' . $flag, $value['nombre_empresa']);
+    
+                $flag ++;
+            }
+    
+            $nameDocument = "reporteGenerado" . rand() . ".xlsx";
+    
+            $writer = IOFactory::createWriter($spreadsheet, 'Xlsx');
+            $writer->save($ruta . $nameDocument);
+            
+            echo $nameDocument;
+        }
+        else
+        {
+            echo 1;
+        }
+
     }
 
 ?>
