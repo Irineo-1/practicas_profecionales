@@ -7,35 +7,32 @@ class Alumno
 {
     private static $Tabla = "alumnos";
 
-    public static function registrarUsuario( $numero_control, $nombre, $especialidad, $turno, $password )
+    public static function registrarUsuario( $numero_control, $nombre, $especialidad, $turno )
     {
-        $hashPassword = password::hashPassword($password);
-
         $cnn = DBConecction::getConnection();
 
-        $sql = "INSERT INTO ".self::$Tabla."(numero_control, nombre_completo, especialidad, turno, password) VALUES('$numero_control', '$nombre', '$especialidad', '$turno', '$hashPassword')";
+        $sql = "INSERT INTO ".self::$Tabla."(numero_control, nombre_completo, especialidad, turno) VALUES('$numero_control', '$nombre', '$especialidad', '$turno')";
 
         $cnn->query($sql);
 
         $cnn->close();
 
-        $_SESSION["NControl"] = $numero_control;
-
         return 0;
     }
 
-    public static function iniciarsecion($numero_control, $password)
+    public static function iniciarsecion($numero_control)
     {
         $cnn = DBConecction::getConnection();
 
-        $sql = "SELECT numero_control, password from ".self::$Tabla." where '$numero_control' = numero_control";
+        $sql = "SELECT numero_control from ".self::$Tabla." where '$numero_control' = numero_control";
 
         $resunt = $cnn->query($sql);
         $pastORnot = 0;
         
+
         while($row = $resunt->fetch_assoc())
         {
-            if(password::verificarPassword($password,$row["password"]))
+            if(count($row) > 0)
             {
                 $pastORnot = 1;
                 $_SESSION["NControl"] = $numero_control;

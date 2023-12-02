@@ -132,4 +132,50 @@
 
     }
 
+    if( $_POST["action"] == "agregar_alumnos" )
+    {
+        $file = $_FILES["file"];
+        $turno = $_POST["turno"];
+        $especialidad = $_POST["especialidad"];
+
+        $temporalNameDocument = v4() . ".xlsx";
+        $ruta = "../templatesDocumentos/".$temporalNameDocument;
+
+        move_uploaded_file($file["tmp_name"], $ruta);
+
+        $reader = IOFactory::createReader('Xlsx');
+        $spreadsheet = $reader->load($ruta);
+        
+        $endDocument = 1;
+        $init = 13;
+
+        while( $endDocument <= 1 )
+        {
+            $worksheet = $spreadsheet->getActiveSheet();
+            $ncontrol = $worksheet->getCell('B'. $init)->getValue();
+            $nombre = $worksheet->getCell('C'. $init)->getValue();
+            
+            if(is_null($ncontrol))
+            {
+                $endDocument = 2;
+            }
+            else
+            {
+                $init ++;
+                Alumno::registrarUsuario( $ncontrol, $nombre, $especialidad, $turno );
+            }
+        }
+        
+        echo $temporalNameDocument;
+    }
+
+
+    function v4() {
+        return sprintf('%04x%04x_%04x_%04x_%04x_%04x%04x%04x',
+            mt_rand(0, 0xffff), mt_rand(0, 0xffff),
+            mt_rand(0, 0x0fff) | 0x4000,
+            mt_rand(0, 0x3fff) | 0x8000,
+            mt_rand(0, 0xffff), mt_rand(0, 0xffff), mt_rand(0, 0xffff), mt_rand(0, 0xffff)
+        );
+    }
 ?>

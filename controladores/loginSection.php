@@ -5,18 +5,6 @@
     require_once(dirname(dirname(__FILE__))."/modelos/alumno.php");
     require_once(dirname(dirname(__FILE__))."/modelos/maestro.php");
 
-    if($_POST["action"] == "registrar_usuario")
-    {
-        $numero_control = $_POST['numero_control'];
-        $nombre = $_POST['nombre'];
-        $especialidad = $_POST['especialidad'];
-        $turno = $_POST['turno'];
-        $password = $_POST['password'];
-
-        $res = Alumno::registrarUsuario( $numero_control, $nombre, $especialidad, $turno, $password );
-        echo $res;
-    }
-
     if($_POST["action"] == "registrar_maestro")
     {
         $nombre = $_POST['nombre']; 
@@ -38,12 +26,11 @@
         echo $res;
     }
 
-    if($_POST['action'] == "iniciar_Secion"){
-
+    if($_POST['action'] == "iniciar_Secion")
+    {
         $numero_usuario = $_POST["Numero_usuario"];
-        $password = $_POST["Contrasena"];
 
-        $catchresp = Alumno::iniciarsecion($numero_usuario,$password);
+        $catchresp = Alumno::iniciarsecion($numero_usuario);
         echo $catchresp;
     }
 

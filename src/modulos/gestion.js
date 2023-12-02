@@ -31,13 +31,17 @@ createApp({
         let showAlertAddIns = ref(false)
         let generarReporteMDL = ref(false)
         let smsError = ref(false)
+        let uploadAlumnos = ref(false)
         let tipoAlerta = ref("")
+        let especialidadSeleccionada = ref("")
         let statusSolicitud = ref(100)
         let statusCartaAceptacion = ref(100)
         let idDocumentoSolicitud = ref(100)
         let idDocumentoCartaAceptacion = ref(100)
         let DOCcarta_liberacion = ref([])
+        let alumnosExcel = ref([])
         let turnos = ref(["Verspertino", "Matutino"])
+        let especialidades = ref(["Medios de comunicacion", "Programacion", "Elecricidad", "Laboratorista quimico", "Ventas", "Contabilidad", "Preparacion de alimentos y bebidas"])
         let emailRules = ref([value => {
           const pattern = /^(([^<>()[\]\\.,;:\s@"]+(\.[^<>()[\]\\.,;:\s@"]+)*)|(".+"))@((\[[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}])|(([a-zA-Z\-0-9]+\.)+[a-zA-Z]{2,}))$/
           return pattern.test(value) || 'Invalid e-mail.'
@@ -276,6 +280,36 @@ createApp({
             })
         }
 
+        const guardarAlumnos = () =>
+        {
+            const data = new FormData()
+            data.append("action", "agregar_alumnos")
+            data.append("file", alumnosExcel.value[0])
+            data.append("turno", turnoSelecReport.value)
+            data.append("especialidad", especialidadSeleccionada.value)
+
+            fetch("../../controladores/informacionUser.php", {
+                method: "POST",
+                body: data
+            })
+            .then(res => res.text())
+            .then( async (nameDocument) => {
+                uploadAlumnos.value = false
+                alumnosExcel.value = []
+                turnoSelecReport.value = ""
+                especialidadSeleccionada.value = ""
+                alumnos.value = await getUsers()
+
+                let form = new FormData()
+                form.append("action", "eliminar_documento")
+                form.append("archivo", nameDocument)
+                fetch(`../../controladores/stepSection.php`,{
+                  method: "POST",
+                  body: form,
+                })
+            })
+        }
+
         return {
             nombreMaestro,
             puesto,
@@ -322,6 +356,10 @@ createApp({
             turnos,
             smsError,
             texto_error,
+            especialidades,
+            especialidadSeleccionada,
+            uploadAlumnos,
+            alumnosExcel,
             CerrarSesion,
             seeDocuments,
             downloadDocument,
@@ -329,7 +367,8 @@ createApp({
             actualizarAlumno,
             goToFiles,
             guardarInstitucion,
-            generarReporteAlumnos
+            generarReporteAlumnos,
+            guardarAlumnos,
         }
     },
     async created()
