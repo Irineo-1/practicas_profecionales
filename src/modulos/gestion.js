@@ -20,7 +20,7 @@ createApp({
         let panel = ref([])
         let nombreAlumnoSeleccionado = ref("")
         let idAlumnoSeleccionado = ref(0)
-        let nuevaPassword = ref("")
+        let nControlMD = ref("")
         let textoAlerta = ref("")
         let turnoSelecReport = ref("")
         let condicionReporte = ref("")
@@ -32,6 +32,7 @@ createApp({
         let generarReporteMDL = ref(false)
         let smsError = ref(false)
         let uploadAlumnos = ref(false)
+        let deleteSelect = ref(false)
         let tipoAlerta = ref("")
         let especialidadSeleccionada = ref("")
         let statusSolicitud = ref(100)
@@ -157,16 +158,17 @@ createApp({
             })
         }
 
-        const getAlumnoSelected = (id, nameAlumno) =>
+        const getAlumnoSelected = (id, nameAlumno, numeroControl) =>
         {
             idAlumnoSeleccionado.value = id
             nombreAlumnoSeleccionado.value = nameAlumno
+            nControlMD.value = numeroControl
             vista.value = 2
         }
 
         const actualizarAlumno = () =>
         {
-            if( nuevaPassword.value.trim() == '' )
+            if( nControlMD.value.trim() == '' )
             {
                 textoAlerta.value = "La contraseña esta vacia"
                 infoAccion.value = false
@@ -177,11 +179,11 @@ createApp({
             {
                 const formData = new FormData();
                 formData.append('action', 'update_alumno')
-                formData.append('id', 'update_alumno')
-                formData.append('nombre', 'update_alumno')
-                formData.append('pass', 'update_alumno')
+                formData.append('id', idAlumnoSeleccionado.value)
+                formData.append('nombre', nombreAlumnoSeleccionado.value)
+                formData.append('numeroControl', nControlMD.value)
                 
-                fetch('../../controladores/loginSection.php', {
+                fetch('../../controladores/informacionUser.php', {
                     method: 'POST',
                     body : formData
                 }).then(res => res.text()).then(() => {
@@ -325,7 +327,7 @@ createApp({
             DOCcarta_aceptacion,
             nombreAlumnoSeleccionado,
             idAlumnoSeleccionado,
-            nuevaPassword,
+            nControlMD,
             DOCfirmado,
             infoAccion,
             showAlerta,
@@ -360,6 +362,7 @@ createApp({
             especialidadSeleccionada,
             uploadAlumnos,
             alumnosExcel,
+            deleteSelect,
             CerrarSesion,
             seeDocuments,
             downloadDocument,

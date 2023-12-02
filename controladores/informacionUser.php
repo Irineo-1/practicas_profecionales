@@ -20,9 +20,9 @@
     {
         $id = $_POST["id"];
         $nombre = $_POST["nombre"];
-        $pass = $_POST["pass"];
+        $numeroControl = $_POST["numeroControl"];
         
-        $res = Alumno::updateAlumno( $id, $nombre, $pass );
+        $res = Alumno::updateAlumno( $id, $nombre, $numeroControl );
         echo $res;
     }
 

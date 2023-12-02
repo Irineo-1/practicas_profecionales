@@ -118,7 +118,7 @@
                                                     style="margin-right: 5px;"
                                                     icon="mdi-circle-edit-outline"
                                                     variant="tonal"
-                                                    @click="getAlumnoSelected(alumno.id, alumno.nombre_completo)"
+                                                    @click="getAlumnoSelected(alumno.id, alumno.nombre_completo, alumno.numero_control)"
                                                 >
                                             </template>
                                         </v-list-item>
@@ -263,10 +263,10 @@
                                                         v-model="nombreAlumnoSeleccionado"
                                                     ></v-text-field>
                                                     <v-text-field
-                                                        label="Nueva contraseña"
+                                                        label="Numero de control"
                                                         prepend-icon="mdi-lock-outline"
                                                         variant="solo"
-                                                        v-model="nuevaPassword"
+                                                        v-model="nControlMD"
                                                     ></v-text-field>
                                                 </v-col>
                                             </v-row>
@@ -275,8 +275,15 @@
                                             <v-spacer></v-spacer>
                                             <v-btn
                                                 variant="elevated"
+                                                color="red"
+                                                @click="infoAccion = true, deleteSelect = true"
+                                            >
+                                                Eliminar
+                                            </v-btn>
+                                            <v-btn
+                                                variant="elevated"
                                                 color="green-lighten-1"
-                                                @click="infoAccion = true"
+                                                @click="infoAccion = true, deleteSelect = false"
                                             >
                                                 Actualizar
                                             </v-btn>
@@ -288,11 +295,15 @@
                                     >
                                         <v-card>
                                             <v-card-title>
-                                                <v-icon color="blue">mdi-alert-circle-outline</v-icon>
+                                                <v-icon color="blue" v-show="!deleteSelect">mdi-alert-circle-outline</v-icon>
+                                                <v-icon color="red" v-show="deleteSelect">mdi-alert</v-icon>
                                                 ¿Esta seguro de esta accion?
                                             </v-card-title>
 
-                                            <v-card-text>
+                                            <v-card-text v-if="deleteSelect">
+                                                Se eliminara el usuario
+                                            </v-card-text>
+                                            <v-card-text v-else>
                                                 Se actualizaran los datos modificados del usuario
                                             </v-card-text>
 
@@ -301,13 +312,21 @@
                                                 <v-btn
                                                     text="Actualizar"
                                                     variant="elevated"
+                                                    v-show="!deleteSelect"
                                                     color="green-lighten-1"
+                                                    @click="actualizarAlumno"
+                                                ></v-btn>
+                                                <v-btn
+                                                    text="Eliminar"
+                                                    variant="elevated"
+                                                    v-show="deleteSelect"
+                                                    color="red"
                                                     @click="actualizarAlumno"
                                                 ></v-btn>
                                                 <v-btn
                                                     text="Cancelar"
                                                     variant="elevated"
-                                                    color="red"
+                                                    color="grey"
                                                     @click="infoAccion = false"
                                                 ></v-btn>
                                             </v-card-actions>
