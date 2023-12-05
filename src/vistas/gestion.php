@@ -246,48 +246,50 @@
                                 </v-card>
                                 <v-card class="mx-auto" :class="[`elevation-5`]" v-if="vista == 2">
                                     <v-card max-width="400" class="mx-auto" :class="[`elevation-0`]">
-                                    <br>
-                                    <v-alert
-                                        v-if="showAlerta"
-                                        closable
-                                        :title="textoAlerta"
-                                        :type="tipoAlerta"
-                                    ></v-alert>
-                                        <v-container>
-                                            <v-row>
-                                                <v-col>
-                                                    <v-text-field
-                                                        label="Nombre"
-                                                        prepend-icon="mdi-account"
-                                                        variant="solo"
-                                                        v-model="nombreAlumnoSeleccionado"
-                                                    ></v-text-field>
-                                                    <v-text-field
-                                                        label="Numero de control"
-                                                        prepend-icon="mdi-lock-outline"
-                                                        variant="solo"
-                                                        v-model="nControlMD"
-                                                    ></v-text-field>
-                                                </v-col>
-                                            </v-row>
-                                        </v-container>
-                                        <v-card-actions>
-                                            <v-spacer></v-spacer>
-                                            <v-btn
-                                                variant="elevated"
-                                                color="red"
-                                                @click="infoAccion = true, deleteSelect = true"
-                                            >
-                                                Eliminar
-                                            </v-btn>
-                                            <v-btn
-                                                variant="elevated"
-                                                color="green-lighten-1"
-                                                @click="infoAccion = true, deleteSelect = false"
-                                            >
-                                                Actualizar
-                                            </v-btn>
-                                        </v-card-actions>
+                                        <br>
+                                        <v-alert
+                                            v-if="showAlerta"
+                                            closable
+                                            :title="textoAlerta"
+                                            :type="tipoAlerta"
+                                        ></v-alert>
+                                        <div v-if="!showAlerta">
+                                            <v-container>
+                                                <v-row>
+                                                    <v-col>
+                                                        <v-text-field
+                                                            label="Nombre"
+                                                            prepend-icon="mdi-account"
+                                                            variant="solo"
+                                                            v-model="nombreAlumnoSeleccionado"
+                                                        ></v-text-field>
+                                                        <v-text-field
+                                                            label="Numero de control"
+                                                            prepend-icon="mdi-lock-outline"
+                                                            variant="solo"
+                                                            v-model="nControlMD"
+                                                        ></v-text-field>
+                                                    </v-col>
+                                                </v-row>
+                                            </v-container>
+                                            <v-card-actions>
+                                                <v-spacer></v-spacer>
+                                                <v-btn
+                                                    variant="elevated"
+                                                    color="red"
+                                                    @click="infoAccion = true, deleteSelect = true"
+                                                >
+                                                    Eliminar
+                                                </v-btn>
+                                                <v-btn
+                                                    variant="elevated"
+                                                    color="green-lighten-1"
+                                                    @click="infoAccion = true, deleteSelect = false"
+                                                >
+                                                    Actualizar
+                                                </v-btn>
+                                            </v-card-actions>
+                                        </div>
                                     </v-card>
                                     <v-dialog
                                         width="500"
@@ -321,7 +323,7 @@
                                                     variant="elevated"
                                                     v-show="deleteSelect"
                                                     color="red"
-                                                    @click="actualizarAlumno"
+                                                    @click="eliminarAlumno"
                                                 ></v-btn>
                                                 <v-btn
                                                     text="Cancelar"
@@ -368,6 +370,7 @@
                             </v-col>
                         </v-row>
                         <v-dialog
+                        persistent
                         v-model="generarReporteMDL"
                         width="500px"
                         >

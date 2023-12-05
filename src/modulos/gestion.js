@@ -164,6 +164,10 @@ createApp({
             nombreAlumnoSeleccionado.value = nameAlumno
             nControlMD.value = numeroControl
             vista.value = 2
+
+            textoAlerta.value = ""
+            tipoAlerta.value = ""
+            showAlerta.value = false
         }
 
         const actualizarAlumno = () =>
@@ -193,6 +197,24 @@ createApp({
                     showAlerta.value = true
                 })
             }
+        }
+
+        const eliminarAlumno = () =>
+        {
+            const formData = new FormData();
+            formData.append('action', 'delete_alumno')
+            formData.append('id', idAlumnoSeleccionado.value)
+            
+            fetch('../../controladores/informacionUser.php', {
+                method: 'POST',
+                body : formData
+            }).then(res => res.text()).then( async () => {
+                infoAccion.value = false
+                textoAlerta.value = "Se elimino correctamente"
+                tipoAlerta.value = "success"
+                showAlerta.value = true
+                alumnos.value = alumnos.value.filter(el => el.id != idAlumnoSeleccionado.value)
+            })
         }
 
         const goToFiles = () =>
@@ -372,6 +394,7 @@ createApp({
             guardarInstitucion,
             generarReporteAlumnos,
             guardarAlumnos,
+            eliminarAlumno,
         }
     },
     async created()

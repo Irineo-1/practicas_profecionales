@@ -91,6 +91,19 @@ class Alumno
         return 0;
     }
 
+    public static function deleteAlumno( $id )
+    {
+        $cnn = DBConecction::getConnection();
+
+        $sql = "DELETE FROM ".self::$Tabla." WHERE id = '$id'";
+
+        $cnn->query($sql);
+
+        $cnn->close();
+
+        return 0;
+    }
+
     public static function getAlumno()
     {
         $cnn = DBConecction::getConnection();
@@ -135,8 +148,8 @@ class Alumno
     {
         $cnn = DBConecction::getConnection();
 
-        $sql = "SELECT al.numero_control, al.nombre_completo, al.especialidad, ies.nombre_empresa FROM ".self::$Tabla." al INNER JOIN instituciones ies ON al.institucion = ies.id WHERE turno = '$turno' AND numero_proceso $condicion";
-
+        $sql = "SELECT al.numero_control, al.nombre_completo, al.especialidad, ies.nombre_empresa FROM ".self::$Tabla." al LEFT JOIN instituciones ies ON al.institucion = ies.id WHERE turno = '$turno' AND numero_proceso $condicion";
+        
         $res = $cnn->query($sql);
 
         $data = [];

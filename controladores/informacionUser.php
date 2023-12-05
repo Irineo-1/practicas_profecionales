@@ -26,6 +26,14 @@
         echo $res;
     }
 
+    if( $_POST["action"] == "delete_alumno" )
+    {
+        $id = $_POST["id"];
+
+        $res = Alumno::deleteAlumno( $id );
+        echo $res;
+    }
+
     if( $_POST["action"] == "update_estatus_documento" )
     {
         $id = $_POST["id"];
@@ -99,7 +107,7 @@
         {
             $res = Alumno::getAlumnosCartaLiberacion();
         }
-
+        
         if(count($res) > 0)
         {
             $reader = IOFactory::createReader('Xlsx');
