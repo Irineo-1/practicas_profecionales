@@ -22,30 +22,29 @@ USE `practicas_profesionales`;
 -- Dumping structure for table practicas_profesionales.alumnos
 CREATE TABLE IF NOT EXISTS `alumnos` (
   `id` int(11) NOT NULL AUTO_INCREMENT,
-  `numero_control` int(11) NOT NULL DEFAULT 0,
+  `numero_control` varchar(50) NOT NULL DEFAULT '0',
   `nombre_completo` varchar(200) NOT NULL DEFAULT '0',
   `especialidad` varchar(200) NOT NULL DEFAULT '0',
   `turno` varchar(40) NOT NULL DEFAULT '0',
-  `password` varchar(200) NOT NULL DEFAULT '0',
   `numero_proceso` int(11) NOT NULL DEFAULT 0,
   `institucion` int(11) NOT NULL DEFAULT 0,
   PRIMARY KEY (`id`),
   UNIQUE KEY `numero_control` (`numero_control`)
-) ENGINE=InnoDB AUTO_INCREMENT=16 DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_general_ci;
+) ENGINE=InnoDB AUTO_INCREMENT=439 DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_general_ci;
 
 -- Data exporting was unselected.
 
 -- Dumping structure for table practicas_profesionales.documentos
 CREATE TABLE IF NOT EXISTS `documentos` (
   `id` int(11) NOT NULL AUTO_INCREMENT,
-  `numero_control` int(11) NOT NULL DEFAULT 0,
+  `numero_control` varchar(100) NOT NULL DEFAULT '0',
   `nombre_documento` varchar(150) NOT NULL DEFAULT '0',
   `proceso` varchar(150) NOT NULL DEFAULT '0',
   `estatus` int(11) DEFAULT 1,
   PRIMARY KEY (`id`),
-  KEY `FK_archivos_alumno` (`numero_control`),
-  CONSTRAINT `FK_archivos_alumno` FOREIGN KEY (`numero_control`) REFERENCES `alumnos` (`numero_control`) ON DELETE CASCADE ON UPDATE NO ACTION
-) ENGINE=InnoDB AUTO_INCREMENT=96 DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_general_ci;
+  KEY `FK1_documents_user` (`numero_control`),
+  CONSTRAINT `FK1_documents_user` FOREIGN KEY (`numero_control`) REFERENCES `alumnos` (`numero_control`) ON DELETE CASCADE ON UPDATE NO ACTION
+) ENGINE=InnoDB AUTO_INCREMENT=110 DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_general_ci;
 
 -- Data exporting was unselected.
 
@@ -65,7 +64,7 @@ CREATE TABLE IF NOT EXISTS `instituciones` (
   `clave_centro` varchar(100) NOT NULL DEFAULT '',
   `tipo_institucion` varchar(100) NOT NULL DEFAULT '',
   PRIMARY KEY (`id`)
-) ENGINE=InnoDB AUTO_INCREMENT=50 DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_general_ci;
+) ENGINE=InnoDB AUTO_INCREMENT=54 DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_general_ci;
 
 -- Data exporting was unselected.
 
@@ -79,7 +78,7 @@ CREATE TABLE IF NOT EXISTS `maestros` (
   `password` varchar(200) DEFAULT '',
   PRIMARY KEY (`id`),
   UNIQUE KEY `email` (`email`)
-) ENGINE=InnoDB AUTO_INCREMENT=4 DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_general_ci;
+) ENGINE=InnoDB AUTO_INCREMENT=6 DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_general_ci;
 
 -- Data exporting was unselected.
 
