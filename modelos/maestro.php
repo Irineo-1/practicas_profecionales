@@ -74,6 +74,41 @@ class Maestro
         return $data;
     }
 
+    public static function deleteMaestro( $id )
+    {
+        $cnn = DBConecction::getConnection();
+
+        $sql = "DELETE FROM " . self::$tabla . " WHERE id = '$id'";
+
+        $cnn->query($sql);
+
+        $cnn->close();
+
+        return 0;
+    }
+
+    public static function getMaestros()
+    {
+        $cnn = DBConecction::getConnection();
+
+        $email = $_SESSION["emailMaestro"];
+
+        $sql = "SELECT id, nombre, puesto, turno FROM " . self::$tabla . " WHERE email != '$email'";
+
+        $res = $cnn->query($sql);
+
+        $data = [];
+
+        while($row = $res->fetch_assoc())
+        {
+            array_push($data, $row);
+        }
+
+        $cnn->close();
+
+        return $data;
+    }
+
     public static function getDirectores()
     {
         $cnn = DBConecction::getConnection();

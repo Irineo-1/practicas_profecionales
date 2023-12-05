@@ -1,5 +1,5 @@
 import { createApp, ref, computed, watch, vuetify } from '../componentes/initVue.js'
-import { getMaestro } from '../componentes/maestros.js'
+import { getMaestro, getMaestros } from '../componentes/maestros.js'
 import { getUsers } from '../componentes/user.js'
 import { getDocuments } from '../componentes/user.js'
 
@@ -7,6 +7,7 @@ createApp({
     setup()
     {
         let nombreMaestro = ref("")
+        let maestros = ref([])
         let alumnos = ref([])
         let puesto = ref("")
         let turno = ref("")
@@ -21,19 +22,15 @@ createApp({
         let nombreAlumnoSeleccionado = ref("")
         let idAlumnoSeleccionado = ref(0)
         let nControlMD = ref("")
-        let textoAlerta = ref("")
         let turnoSelecReport = ref("")
         let condicionReporte = ref("")
         let texto_error = ref("")
         let vistaAddInstitucion = ref("alumnos")
-        let infoAccion = ref(false)
-        let showAlerta = ref(false)
         let showAlertAddIns = ref(false)
         let generarReporteMDL = ref(false)
         let smsError = ref(false)
         let uploadAlumnos = ref(false)
-        let deleteSelect = ref(false)
-        let tipoAlerta = ref("")
+        let DGdeleteTrabajadores = ref(false)
         let especialidadSeleccionada = ref("")
         let statusSolicitud = ref(100)
         let statusCartaAceptacion = ref(100)
@@ -164,56 +161,77 @@ createApp({
             nombreAlumnoSeleccionado.value = nameAlumno
             nControlMD.value = numeroControl
             vista.value = 2
-
-            textoAlerta.value = ""
-            tipoAlerta.value = ""
-            showAlerta.value = false
         }
 
         const actualizarAlumno = () =>
         {
             if( nControlMD.value.trim() == '' )
             {
-                textoAlerta.value = "La contraseña esta vacia"
-                infoAccion.value = false
-                tipoAlerta.value = "error"
-                showAlerta.value = true
+                Swal.fire("El número de control no puede ser vacío", "", "info");
             }
             else
             {
-                const formData = new FormData();
-                formData.append('action', 'update_alumno')
-                formData.append('id', idAlumnoSeleccionado.value)
-                formData.append('nombre', nombreAlumnoSeleccionado.value)
-                formData.append('numeroControl', nControlMD.value)
-                
-                fetch('../../controladores/informacionUser.php', {
-                    method: 'POST',
-                    body : formData
-                }).then(res => res.text()).then(() => {
-                    infoAccion.value = false
-                    textoAlerta.value = "Se actualizo correctamente"
-                    tipoAlerta.value = "success"
-                    showAlerta.value = true
+                Swal.fire({
+                title: `¿Quieres actualizar a ${nombreAlumnoSeleccionado.value}?`,
+                showDenyButton: true,
+                showCancelButton: false,
+                confirmButtonText: "Actualizar",
+                denyButtonText: `No actualizar`
+                }).then((result) => {
+                    if (result.isConfirmed)
+                    {
+                        const formData = new FormData();
+                        formData.append('action', 'update_alumno')
+                        formData.append('id', idAlumnoSeleccionado.value)
+                        formData.append('nombre', nombreAlumnoSeleccionado.value)
+                        formData.append('numeroControl', nControlMD.value)
+                        
+                        fetch('../../controladores/informacionUser.php', {
+                            method: 'POST',
+                            body : formData
+                        }).then(res => res.text()).then( async () => {
+                            Swal.fire(`Se actualizo correctamente a ${nombreAlumnoSeleccionado.value}`, "", "success");
+                            vista.value = 0
+                            alumnos.value = await getUsers()
+                        })
+                    }
+                    else if (result.isDenied)
+                    {
+                        Swal.fire("Accion cancelada", "", "info");
+                    }
                 })
             }
         }
 
         const eliminarAlumno = () =>
         {
-            const formData = new FormData();
-            formData.append('action', 'delete_alumno')
-            formData.append('id', idAlumnoSeleccionado.value)
-            
-            fetch('../../controladores/informacionUser.php', {
-                method: 'POST',
-                body : formData
-            }).then(res => res.text()).then( async () => {
-                infoAccion.value = false
-                textoAlerta.value = "Se elimino correctamente"
-                tipoAlerta.value = "success"
-                showAlerta.value = true
-                alumnos.value = alumnos.value.filter(el => el.id != idAlumnoSeleccionado.value)
+            Swal.fire({
+            title: `¿Quieres eliminar a ${nombreAlumnoSeleccionado.value}?`,
+            showDenyButton: true,
+            showCancelButton: false,
+            confirmButtonText: "Eliminar",
+            denyButtonText: `No eliminar`
+            }).then((result) => {
+                if (result.isConfirmed)
+                {
+                    const formData = new FormData();
+                    formData.append('action', 'delete_alumno')
+                    formData.append('id', idAlumnoSeleccionado.value)
+                    
+                    fetch('../../controladores/informacionUser.php', {
+                        method: 'POST',
+                        body : formData
+                    }).then(res => res.text()).then( async () => {
+                        alumnos.value = alumnos.value.filter(el => el.id != idAlumnoSeleccionado.value)
+                        vista.value = 0
+                        alumnos.value = await getUsers()
+                    })
+                    Swal.fire(`Se elimino correctamente a ${nombreAlumnoSeleccionado.value}`, "", "success");
+                }
+                else if (result.isDenied)
+                {
+                    Swal.fire("Accion cancelada", "", "info");
+                }
             })
         }
 
@@ -246,6 +264,7 @@ createApp({
           })
           .then(res => res.text())
           .then(() => {
+            Swal.fire(`Se agrego correctamente`, "", "success");
             showAlertAddIns.value = true
             adNombreInstitucion.value = ""
             adNombreTitular.value = ""
@@ -334,6 +353,33 @@ createApp({
             })
         }
 
+        const deleteMaestro = ( id, puesto, nombre ) =>
+        {
+            Swal.fire({
+            title: `¿Quieres eliminar al ${puesto} ${nombre}?`,
+            showDenyButton: true,
+            showCancelButton: false,
+            confirmButtonText: "Eliminar",
+            denyButtonText: `No eliminar`
+            }).then((result) => {
+                if (result.isConfirmed) {
+                    const formData = new FormData();
+                    formData.append('action', 'delete_maestro')
+                    formData.append('id', id)
+                    
+                    fetch('../../controladores/informacionUser.php', {
+                        method: 'POST',
+                        body : formData
+                    }).then(res => res.text()).then( async () => {
+                        Swal.fire(`Se elimino correctamente a ${nombre}`, "", "success");
+                        maestros.value = maestros.value.filter(el => el.id != id)
+                    })
+                } else if (result.isDenied) {
+                    Swal.fire("Accion cancelada", "", "info");
+                }
+            })
+        }
+
         return {
             nombreMaestro,
             puesto,
@@ -351,10 +397,6 @@ createApp({
             idAlumnoSeleccionado,
             nControlMD,
             DOCfirmado,
-            infoAccion,
-            showAlerta,
-            textoAlerta,
-            tipoAlerta,
             statusSolicitud,
             estados,
             statusCartaAceptacion,
@@ -383,8 +425,9 @@ createApp({
             especialidades,
             especialidadSeleccionada,
             uploadAlumnos,
+            DGdeleteTrabajadores,
             alumnosExcel,
-            deleteSelect,
+            maestros,
             CerrarSesion,
             seeDocuments,
             downloadDocument,
@@ -395,12 +438,14 @@ createApp({
             generarReporteAlumnos,
             guardarAlumnos,
             eliminarAlumno,
+            deleteMaestro,
         }
     },
     async created()
     {
         let maestro = await getMaestro()
         this.alumnos = await getUsers()
+        this.maestros = await getMaestros()
         this.nombreMaestro = maestro[0].nombre
         this.puesto = maestro[0].puesto
         this.turno = maestro[0].turno

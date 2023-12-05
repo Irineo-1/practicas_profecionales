@@ -34,6 +34,14 @@
         echo $res;
     }
 
+    if( $_POST["action"] == "delete_maestro" )
+    {
+        $id = $_POST["id"];
+
+        $res = Maestro::deleteMaestro( $id );
+        echo $res;
+    }
+
     if( $_POST["action"] == "update_estatus_documento" )
     {
         $id = $_POST["id"];
@@ -45,6 +53,12 @@
     if( $_POST["action"] == "get_maestro" )
     {
         $res = Maestro::getMaestro();
+        echo json_encode($res);
+    }
+
+    if( $_POST["action"] == "get_maestros" )
+    {
+        $res = Maestro::getMaestros();
         echo json_encode($res);
     }
 

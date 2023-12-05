@@ -47,6 +47,13 @@
 
                     <v-btn
                         color="white"
+                        @click="DGdeleteTrabajadores = true"
+                        icon="mdi-account-cog"
+                    >
+                    </v-btn>
+
+                    <v-btn
+                        color="white"
                         @click="CerrarSesion"
                         icon="mdi-logout-variant"
                     >
@@ -61,7 +68,7 @@
                                 color="white"
                                 v-bind="props"
                             >
-                            {{ nombreMaestro }} - {{ puesto }} - {{ turno }}
+                            {{ nombreMaestro }} - {{ puesto }}
                             </v-btn>
                         </template>
                     </v-menu>
@@ -246,14 +253,7 @@
                                 </v-card>
                                 <v-card class="mx-auto" :class="[`elevation-5`]" v-if="vista == 2">
                                     <v-card max-width="400" class="mx-auto" :class="[`elevation-0`]">
-                                        <br>
-                                        <v-alert
-                                            v-if="showAlerta"
-                                            closable
-                                            :title="textoAlerta"
-                                            :type="tipoAlerta"
-                                        ></v-alert>
-                                        <div v-if="!showAlerta">
+                                        <div>
                                             <v-container>
                                                 <v-row>
                                                     <v-col>
@@ -277,63 +277,20 @@
                                                 <v-btn
                                                     variant="elevated"
                                                     color="red"
-                                                    @click="infoAccion = true, deleteSelect = true"
+                                                    @click="eliminarAlumno"
                                                 >
                                                     Eliminar
                                                 </v-btn>
                                                 <v-btn
                                                     variant="elevated"
                                                     color="green-lighten-1"
-                                                    @click="infoAccion = true, deleteSelect = false"
+                                                    @click="actualizarAlumno"
                                                 >
                                                     Actualizar
                                                 </v-btn>
                                             </v-card-actions>
                                         </div>
                                     </v-card>
-                                    <v-dialog
-                                        width="500"
-                                        v-model="infoAccion"
-                                    >
-                                        <v-card>
-                                            <v-card-title>
-                                                <v-icon color="blue" v-show="!deleteSelect">mdi-alert-circle-outline</v-icon>
-                                                <v-icon color="red" v-show="deleteSelect">mdi-alert</v-icon>
-                                                ¿Esta seguro de esta accion?
-                                            </v-card-title>
-
-                                            <v-card-text v-if="deleteSelect">
-                                                Se eliminara el usuario
-                                            </v-card-text>
-                                            <v-card-text v-else>
-                                                Se actualizaran los datos modificados del usuario
-                                            </v-card-text>
-
-                                            <v-card-actions>
-                                                <v-spacer></v-spacer>
-                                                <v-btn
-                                                    text="Actualizar"
-                                                    variant="elevated"
-                                                    v-show="!deleteSelect"
-                                                    color="green-lighten-1"
-                                                    @click="actualizarAlumno"
-                                                ></v-btn>
-                                                <v-btn
-                                                    text="Eliminar"
-                                                    variant="elevated"
-                                                    v-show="deleteSelect"
-                                                    color="red"
-                                                    @click="eliminarAlumno"
-                                                ></v-btn>
-                                                <v-btn
-                                                    text="Cancelar"
-                                                    variant="elevated"
-                                                    color="grey"
-                                                    @click="infoAccion = false"
-                                                ></v-btn>
-                                            </v-card-actions>
-                                        </v-card>
-                                    </v-dialog>
                                     <div class="d-flex justify-center" style="margin-top: 10px; margin-bottom: 10px;">
                                         <v-btn icon="mdi-arrow-left" @click="vista = 0"></v-btn>
                                     </div>
@@ -460,6 +417,37 @@
                                         Generar
                                     </v-btn>
                                 </v-card-actions>
+                            </v-card>
+                        </v-dialog>
+
+                        <v-dialog
+                        v-model="DGdeleteTrabajadores"
+                        width="500px"
+                        >
+                            <v-card>
+                                <v-card-title class="text-h5">
+                                    Eliminar una cuenta
+                                </v-card-title>
+
+                                <v-card-text>
+                                    <div class="container-list-instituciones">
+                                        <v-list-item
+                                            v-for="maestro, i in maestros"
+                                            :key="i"
+                                            :title="maestro.nombre + ' - ' + maestro.puesto"
+                                            class="style-item-list"
+                                        >
+                                            <template v-slot:append>
+                                                <v-btn
+                                                    style="margin-right: 5px;"
+                                                    icon="mdi-delete"
+                                                    variant="tonal"
+                                                    @click="deleteMaestro(maestro.id, maestro.puesto, maestro.nombre)"
+                                                >
+                                            </template>
+                                        </v-list-item>
+                                    </div>
+                                </v-card-text>
                             </v-card>
                         </v-dialog>
                     </v-container>
