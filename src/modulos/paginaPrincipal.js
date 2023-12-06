@@ -23,7 +23,6 @@ createApp({
     let verInformacionEmpresa = ref(false)
     let directores = ref([])
     let fechaInicio = ref("")
-    let fechaFin = ref("")
     let showFormAddInstitucion = ref(false)
     let emailRules = ref([value => {
       const pattern = /^(([^<>()[\]\\.,;:\s@"]+(\.[^<>()[\]\\.,;:\s@"]+)*)|(".+"))@((\[[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}])|(([a-zA-Z\-0-9]+\.)+[a-zA-Z]{2,}))$/
@@ -139,12 +138,16 @@ createApp({
     {
       let today = new Date()
       let formatoToday = `${today.getDate()}/${today.getMonth() + 1}/${today.getFullYear()}`
-      let arrFechaFinDes = fechaFin.value.split("-")
-      let arrFechaInicioDes = fechaInicio.value.split("-")
-      let fechaFinWF = `${arrFechaFinDes[2]} de ${meses.value[parseInt(arrFechaFinDes[1])-1]} del ${arrFechaFinDes[0]}`
-      let fechaInicioWF = `${arrFechaInicioDes[2]} de ${meses.value[parseInt(arrFechaInicioDes[1])-1]} del ${arrFechaInicioDes[0]}`
-      let form = new FormData()
 
+      let arrFechaInicioDes = fechaInicio.value.split("-")
+      let fechaInicioFD = new Date(`${arrFechaInicioDes[0]}-${arrFechaInicioDes[1]}-${arrFechaInicioDes[2]}T00:00:00`)
+
+      fechaInicioFD.setDate(fechaInicioFD.getDate() + 61)
+
+      let fechaInicioWF = `${arrFechaInicioDes[2]} de ${meses.value[parseInt(arrFechaInicioDes[1])-1]} del ${arrFechaInicioDes[0]}`
+      let fechaFinWF = `${(`0${fechaInicioFD.getDate()}`).slice(-2)} de ${meses.value[parseInt(fechaInicioFD.getMonth())]} del ${fechaInicioFD.getFullYear()}`
+
+      let form = new FormData()
       form.append("action", "generar_carta_presentacion")
       form.append("hoy", formatoToday)
       form.append("inicio", fechaInicioWF)
@@ -308,7 +311,6 @@ createApp({
       solicitudFile,
       directores,
       fechaInicio,
-      fechaFin,
       directorAcargo,
       showFormAddInstitucion,
       adTipoInstitucion,

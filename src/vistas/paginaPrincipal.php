@@ -287,10 +287,6 @@
                                                         <input type="date" v-model="fechaInicio">
                                                     </v-col>
                                                     <v-col>
-                                                        <h3>Fin: </h3>
-                                                        <input type="date" v-model="fechaFin">
-                                                    </v-col>
-                                                    <v-col>
                                                         <v-select
                                                         label="Selecciona un director"
                                                         v-model="directorAcargo"
@@ -305,7 +301,7 @@
                                             <v-btn
                                                 append-icon="mdi-download"
                                                 @click="descargarCartaPrecentacion"
-                                                :disabled="( fechaInicio.trim() == '' || fechaFin.trim() == '' || directorAcargo.trim() == '' ) ? true : false"
+                                                :disabled="( fechaInicio.trim() == '' || directorAcargo.trim() == '' ) ? true : false"
                                             >
                                                 Descargar carta de presentación
                                             </v-btn>

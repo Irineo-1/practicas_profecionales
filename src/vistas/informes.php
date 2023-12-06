@@ -81,7 +81,7 @@
                                         color="green"
                                         variant="flat"
                                         @click="subirArchivo(`firmado${informes.length + 1}`)"
-                                        :disabled="( archivo.length < 1 || informes.length == 3 ) ? true : false"
+                                        :disabled="( archivo.length < 1 || informes.length == 10 ) ? true : false"
                                     >
                                         Subir
                                     </v-btn>
